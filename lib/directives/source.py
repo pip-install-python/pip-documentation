@@ -30,3 +30,30 @@ class SC(SourceCode):
                 }
             )
         return dmc.CodeHighlightTabs(code=code, defaultExpanded=defaultExpanded=="true", withExpandButton=withExpandedButton=='true')
+
+
+# Alias for backward compatibility
+class SourceTabs(SourceCode):
+    NAME = "sourcetabs"
+
+    def render(self, renderer, title: str, content: str, **options) -> Component:
+        defaultExpanded = options.pop("defaultExpanded", "false")
+        withExpandedButton = options.pop("withExpandedButton", "true")
+
+        mapping = {
+            "py": {"language": "python", "icon": DashIconify(icon="devicon:python")},
+            "css": {"language": "css", "icon": DashIconify(icon="devicon:css3")},
+        }
+        files = title.split(", ")
+        code = []
+        for file in files:
+            extension = file.split(".")[-1]
+            code.append(
+                {
+                    "fileName": os.path.basename(file),
+                    "code": open(file, "r").read(),
+                    "language": mapping[extension]["language"],
+                    "icon": mapping[extension]["icon"],
+                }
+            )
+        return dmc.CodeHighlightTabs(code=code, defaultExpanded=defaultExpanded=="true", withExpandButton=withExpandedButton=='true')

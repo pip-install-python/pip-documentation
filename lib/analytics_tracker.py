@@ -90,12 +90,49 @@ class AnalyticsTracker:
 
         return "unknown"
 
+    def _get_session_id(self, ip_address, user_agent):
+        """Generate a consistent session ID based on IP and user agent."""
+        import hashlib
+        session_key = f"{ip_address}:{user_agent}"
+        return hashlib.md5(session_key.encode()).hexdigest()
+
     @lru_cache(maxsize=1000)
-    def get_geolocation(self, ip_address):
+    def get_geolocation(self, ip_address, session_id=None):
         """Get geolocation data from IP address using ip-api.com (free service)."""
-        # Skip local/private IPs
+        # For local/private IPs, return consistent sample location per session
         if not ip_address or ip_address in ['127.0.0.1', 'localhost', '::1']:
-            return None
+            # Use session_id to consistently assign a location to each unique visitor
+            # This makes development testing more realistic
+            import hashlib
+
+            # If no session_id provided, use IP as fallback
+            seed_value = session_id if session_id else ip_address
+            location_index = int(hashlib.md5(seed_value.encode()).hexdigest(), 16) % 10
+
+            sample_locations = [
+                {'country': 'United States', 'country_code': 'US', 'region': 'California',
+                 'city': 'San Francisco', 'latitude': 37.7749, 'longitude': -122.4194, 'timezone': 'America/Los_Angeles'},
+                {'country': 'United Kingdom', 'country_code': 'GB', 'region': 'England',
+                 'city': 'London', 'latitude': 51.5074, 'longitude': -0.1278, 'timezone': 'Europe/London'},
+                {'country': 'Japan', 'country_code': 'JP', 'region': 'Tokyo',
+                 'city': 'Tokyo', 'latitude': 35.6762, 'longitude': 139.6503, 'timezone': 'Asia/Tokyo'},
+                {'country': 'Germany', 'country_code': 'DE', 'region': 'Berlin',
+                 'city': 'Berlin', 'latitude': 52.5200, 'longitude': 13.4050, 'timezone': 'Europe/Berlin'},
+                {'country': 'Australia', 'country_code': 'AU', 'region': 'New South Wales',
+                 'city': 'Sydney', 'latitude': -33.8688, 'longitude': 151.2093, 'timezone': 'Australia/Sydney'},
+                {'country': 'Canada', 'country_code': 'CA', 'region': 'Ontario',
+                 'city': 'Toronto', 'latitude': 43.6532, 'longitude': -79.3832, 'timezone': 'America/Toronto'},
+                {'country': 'Brazil', 'country_code': 'BR', 'region': 'São Paulo',
+                 'city': 'São Paulo', 'latitude': -23.5505, 'longitude': -46.6333, 'timezone': 'America/Sao_Paulo'},
+                {'country': 'India', 'country_code': 'IN', 'region': 'Maharashtra',
+                 'city': 'Mumbai', 'latitude': 19.0760, 'longitude': 72.8777, 'timezone': 'Asia/Kolkata'},
+                {'country': 'France', 'country_code': 'FR', 'region': 'Île-de-France',
+                 'city': 'Paris', 'latitude': 48.8566, 'longitude': 2.3522, 'timezone': 'Europe/Paris'},
+                {'country': 'Singapore', 'country_code': 'SG', 'region': 'Singapore',
+                 'city': 'Singapore', 'latitude': 1.3521, 'longitude': 103.8198, 'timezone': 'Asia/Singapore'},
+            ]
+
+            return sample_locations[location_index]
 
         # Skip private IP ranges
         if ip_address.startswith(('10.', '172.', '192.168.', 'fe80:', 'fc00:', 'fd00:')):
@@ -147,24 +184,20 @@ class AnalyticsTracker:
 
         device_type = self.detect_device_type(user_agent)
 
+        # Generate session ID based on IP and user agent
+        session_id = self._get_session_id(ip_address or "unknown", user_agent or "unknown")
+
         visit_data = {
             "timestamp": datetime.now().isoformat(),
             "path": path,
             "device_type": device_type,
             "user_agent": user_agent or "Unknown",
+            "session_id": session_id,
         }
 
         # Add bot type if it's a bot
         if device_type == "bot":
             visit_data["bot_type"] = self.detect_bot_type(user_agent)
-
-        if ip_address:
-            visit_data["ip_address"] = ip_address
-
-            # Try to get geolocation
-            geo_data = self.get_geolocation(ip_address)
-            if geo_data:
-                visit_data["location"] = geo_data
 
         # Load existing data
         try:
@@ -172,6 +205,21 @@ class AnalyticsTracker:
                 data = json.load(f)
         except:
             data = {"visits": [], "stats": {"desktop": 0, "mobile": 0, "tablet": 0, "bot": 0, "total": 0}}
+
+        # Check if this session already has a visit with location data
+        session_has_location = any(
+            v.get('session_id') == session_id and 'location' in v
+            for v in data.get('visits', [])
+        )
+
+        # Only add location data on first visit for this session
+        if ip_address and not session_has_location:
+            visit_data["ip_address"] = ip_address
+
+            # Try to get geolocation with session_id for consistent localhost mapping
+            geo_data = self.get_geolocation(ip_address, session_id)
+            if geo_data:
+                visit_data["location"] = geo_data
 
         # Add visit
         data["visits"].append(visit_data)

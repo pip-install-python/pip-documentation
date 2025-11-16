@@ -44,8 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle scroll event
-    function handleScroll() {
-        const currentScrollY = window.scrollY;
+    function handleScroll(event) {
+        // Get scroll position from event target or window
+        const scrollElement = event && event.target !== document ? event.target : window;
+        const currentScrollY = scrollElement === window ? window.scrollY : scrollElement.scrollTop;
 
         // Determine scroll direction
         const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
@@ -65,9 +67,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200);
     }
 
-    // Add scroll listener with debug
+    // Add scroll listener to window with debug
     window.addEventListener('scroll', handleScroll, { passive: true });
-    console.log('Scroll listener attached');
+    console.log('Window scroll listener attached');
+
+    // Function to attach scroll listeners to dash-dock containers
+    function attachDockScrollListeners() {
+        // Find all dash-dock tab content areas that can scroll
+        const scrollableContainers = document.querySelectorAll('.flexlayout__tab, .flexlayout__tabset_content, [class*="dock"]');
+
+        scrollableContainers.forEach(container => {
+            if (!container.dataset.sunRotationAttached) {
+                // Check if element is scrollable
+                if (container.scrollHeight > container.clientHeight ||
+                    getComputedStyle(container).overflowY === 'auto' ||
+                    getComputedStyle(container).overflowY === 'scroll') {
+
+                    container.addEventListener('scroll', handleScroll, { passive: true });
+                    container.dataset.sunRotationAttached = 'true';
+                    console.log('Attached scroll listener to dock container:', container.className);
+                }
+            }
+        });
+    }
+
+    // Initial attachment
+    setTimeout(attachDockScrollListeners, 500);
+    setTimeout(attachDockScrollListeners, 1500);
+
+    // Re-attach when DOM changes (for dynamically loaded content)
+    const dockObserver = new MutationObserver(function(mutations) {
+        clearTimeout(window.dockScrollTimeout);
+        window.dockScrollTimeout = setTimeout(attachDockScrollListeners, 200);
+    });
+
+    dockObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    console.log('Dock scroll observer active');
 
     // Setup with MutationObserver for Dash page updates
     function setupSunRotation() {

@@ -4,7 +4,7 @@ from dash import Output, Input, clientside_callback, dcc, page_container, State
 from components.header import create_header
 from components.navbar import create_navbar, create_navbar_drawer
 from lib.constants import PRIMARY_COLOR
-
+from dash_iconify import DashIconify
 
 def create_appshell(data):
     return dmc.MantineProvider(
@@ -63,13 +63,19 @@ def create_appshell(data):
             },
             "defaultRadius": "md",
 
-            # Shadow System
+            # Professional Shadow System with Depth
+            # Combines inset highlights (light from top) with drop shadows for realistic depth
+            # xs: Subtle depth for minimal elevation
+            # sm: Standard depth for cards and containers
+            # md: Medium depth for elevated panels
+            # lg: High depth for floating elements like modals
+            # xl: Maximum depth for overlays and popovers
             "shadows": {
-                "xs": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-                "sm": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-                "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                "xs": "0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1)",
+                "sm": "inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.3)",
+                "md": "inset 0 1px 2px rgba(255, 255, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.3)",
+                "lg": "inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.3)",
+                "xl": "inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 16px 48px rgba(0, 0, 0, 0.15), 0 6px 10px rgba(0, 0, 0, 0.3)",
             },
 
             # Color Contrast
@@ -180,8 +186,57 @@ def create_appshell(data):
                         children=page_container,
                         style={"minHeight": "calc(100vh - 70px)"}  # Full height minus header
                     ),
+                    # Footer
+                    dmc.AppShellFooter(
+                        dmc.Container(
+                            dmc.Group([
+                                dmc.Text("© 2025 Pip Install Python LLC", size="sm", c="dimmed", visibleFrom="sm"),
+                                dmc.Group([
+                                    dmc.Anchor(
+                                        dmc.ActionIcon(
+                                            DashIconify(icon="tabler:brand-github"),
+                                            size="lg",
+                                            variant="subtle",
+                                            color="gray.4"
+                                        ),
+                                        href="https://github.com/pip-install-python",
+                                        target="_blank"
+                                    ),
+                                    dmc.Anchor(
+                                        dmc.ActionIcon(
+                                            DashIconify(icon="icomoon-free:youtube2"),
+                                            size="lg",
+                                            variant="subtle",
+                                            color="gray.4"
+                                        ),
+                                        href="https://www.youtube.com/@pipinstallpython/videos",
+                                        target="_blank"
+                                    ),
+                                    dmc.Anchor(
+                                        dmc.ActionIcon(
+                                            DashIconify(icon="tabler:mail"),
+                                            size="lg",
+                                            variant="subtle",
+                                            color="gray.4"
+                                        ),
+                                        href="mailto:pipinstallpython@gmail.com"
+                                    ),
+                                    dmc.Anchor("Terms", href="/terms", size="sm", visibleFrom="sm", c='light-dark(rgb(28, 126, 214), rgb(116, 192, 252))'),
+                                    dmc.Anchor("Privacy Policy", href="/privacy", size="sm", visibleFrom="sm", c='light-dark(rgb(28, 126, 214), rgb(116, 192, 252))'),
+
+                                ], gap="lg")
+                            ], justify="space-between"),
+                            fluid=True,
+                            px="md",
+                            h="100%",
+                            style={"display": "flex", "alignItems": "center"}
+                        ),
+                        h=60,
+                        withBorder=True
+                    )
                 ],
                 header={"height": 70},
+                footer={"height": 60},
                 padding="xl",
                 navbar={
                     "width": 280,
@@ -191,7 +246,7 @@ def create_appshell(data):
                 aside={
                     "width": 280,
                     "breakpoint": "xl",
-                    "collapsed": {"desktop": False, "mobile": True},
+                    "collapsed": {"desktop": True, "mobile": True},
                 },
                 withBorder=True,
             ),
@@ -199,22 +254,16 @@ def create_appshell(data):
     )
 
 
-# Initialize theme from localStorage or browser preference on page load
+# Initialize theme from browser preference on first load
 clientside_callback(
     """
-    function(pathname) {
-        // Check if theme is already stored in localStorage
-        const storedTheme = localStorage.getItem('color-scheme-storage');
-        if (storedTheme) {
-            try {
-                const parsed = JSON.parse(storedTheme);
-                return parsed;
-            } catch (e) {
-                // If parsing fails, fall through to default logic
-            }
+    function(pathname, currentTheme) {
+        // If theme is already set, keep it
+        if (currentTheme) {
+            return currentTheme;
         }
 
-        // Check browser preference
+        // Check browser preference for initial load
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             return 'dark';
         }
@@ -225,6 +274,7 @@ clientside_callback(
     """,
     Output("color-scheme-storage", "data"),
     Input("url", "pathname"),
+    State("color-scheme-storage", "data"),
 )
 
 # Apply theme from storage to MantineProvider
@@ -242,9 +292,9 @@ clientside_callback(
 # Toggle theme when button is clicked
 clientside_callback(
     """
-    function(n_clicks, theme) {
+    function(n_clicks, currentTheme) {
         // Toggle between light and dark
-        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         return newTheme;
     }
     """,

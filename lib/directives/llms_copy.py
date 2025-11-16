@@ -67,7 +67,7 @@ class LlmsCopy(BaseDirective):
 
         # Group buttons together
         component = dmc.Group(
-            [llms_button, json_button],
+            [llms_button],
             gap="xs"
         )
 

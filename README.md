@@ -1,6 +1,6 @@
-# Dash Documentation Boilerplate
+# Pip Install Python Documentation
 
-> A modern, responsive documentation system for Dash applications built with Dash Mantine Components
+> A modern, responsive documentation system and package catalogue for custom Dash components, software, and research projects
 
 [![Dash](https://img.shields.io/badge/Dash-3.2.0-blue.svg)](https://dash.plotly.com/)
 [![DMC](https://img.shields.io/badge/DMC-2.4.0-teal.svg)](https://www.dash-mantine-components.com/)
@@ -8,9 +8,33 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 
-A comprehensive boilerplate for creating beautiful, interactive documentation for your Dash components, data science workflows, and applications. Features markdown-driven content, live code examples, and automatic theme persistence.
+A comprehensive documentation platform showcasing a collection of custom Dash components, software, and research projects maintained by [Pip Install Python](https://github.com/pip-install-python). This system serves as both a package catalogue and a reusable boilerplate for creating beautiful, interactive documentation with markdown-driven content, live code examples, and automatic theme persistence.
 
 ![Documentation Preview](assets/intro_img.jpg)
+
+---
+
+## 📦 Package Catalogue
+
+This documentation system showcases **18 custom Dash component libraries** with comprehensive documentation, live examples, and download statistics:
+
+### Currently Maintained Components (11)
+- **dash-summernote** - Rich text WYSIWYG Editor
+- **dash-insta-stories** - Instagram Stories Component
+- **dash-image-gallery** - Image Gallery Component
+- **dash-fullcalendar** - Thin wrapper around FullCalendar
+- **dash-gauge** - Gauge Component
+- **dash-emoji-mart** - Slack-like Emoji Picker
+- **dash-dock** - Dynamic dock windows and tabs layout
+- **dash-pannellum** - 360 Panorama Viewer for Images and Video
+- **dash-planet** - Interactive orbital menu component
+- **dash-model-viewer** - 3D Model Viewer
+- **dash-excalidraw** - Freeform Drawing and Notebook Component
+
+### Archived Components (7)
+- dash-credit-cards, dash-charty, dash-nivo, dash-discord, dash-dynamic-grid-layout, dash-swiper, dash-fullcalendar
+
+**Total Downloads**: Automatically aggregated from PyPI using the pypistats.org API and displayed on the home page.
 
 ---
 
@@ -28,13 +52,21 @@ A comprehensive boilerplate for creating beautiful, interactive documentation fo
 - Dark and light theme support with **automatic preference persistence**
 - Smooth transitions and professional styling
 - Customizable color schemes and theming
+- **"Other Apps" menu** - Quick navigation to related Pip Install Python projects (Plotly.pro, ai-agent.buzz, GeoMapIndex)
 
 ### 🔍 Developer Experience
 - Hot reload during development
-- Searchable component navigation
+- Searchable component navigation with custom page ordering
 - Syntax highlighting for multiple languages
 - Interactive code examples with live callbacks
 - Component props documentation auto-generation
+
+### 📊 Package Analytics (NEW!)
+- **Automatic download statistics** - Real-time PyPI download counters for all packages
+- **Total downloads aggregation** - Automatically fetches and sums downloads across 18 packages
+- **API integration** - Uses pypistats.org API for accurate historical data
+- **Visual presentation** - Professional download counter displayed on home page
+- **Smart error handling** - Gracefully handles API failures with detailed logging
 
 ### 🤖 AI/LLM & SEO Integration (NEW!)
 - **Automatic AI-friendly documentation** - llms.txt, page.json, architecture.txt
@@ -154,6 +186,7 @@ dash-documentation-boilerplate/
 ├── pages/                       # Dash multi-page app pages
 │   ├── home.md                 # Home page content
 │   ├── home.py                 # Home page layout
+│   ├── download_counter.py     # PyPI download statistics aggregator
 │   └── markdown.py             # Dynamic markdown page loader
 │
 ├── templates/
@@ -415,6 +448,14 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - 🎯 **Production Ready**: SEO-optimized HTML template with extensive developer guidance
 - 📊 **Better UX**: Custom navigation order, improved typography, consistent spacing
 - 🔧 **All Plotly Charts Theme-Aware**: Dynamic template switching in light/dark modes
+
+### Recent Additions (Post 0.3.0)
+
+- 📊 **PyPI Download Counter** - Real-time aggregation of downloads across all 18 packages via pypistats.org API
+- 📚 **Enhanced Component Documentation** - Comprehensive rewrites for dash-emoji-mart, dash-insta-stories, and dash-dock
+- 🎯 **Package Catalogue Home Page** - Side-by-side comparison table for active vs. archived components with custom badges
+- 🔗 **"Other Apps" Navigation Menu** - Quick access to Plotly.pro, ai-agent.buzz, and GeoMapIndex
+- 🐛 **Bug Fixes** - Fixed type errors, typos, and improved component property documentation
 
 ---
 

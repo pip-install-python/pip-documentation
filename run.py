@@ -5,6 +5,10 @@ from flask import jsonify, request, Response, abort
 from components.appshell import create_appshell
 import dash_mantine_components as dmc
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 # AI/LLM Integration & SEO
 from dash_improve_my_llms import add_llms_routes, RobotsConfig, register_page_metadata
 
@@ -36,8 +40,8 @@ app = Dash(
 # AI/LLM & SEO Configuration
 # ============================================================================
 
-# Set base URL for SEO (change to your production URL)
-app._base_url = "https://dash-documentation-boilerplate.onrender.com"  # Update this!
+# Set base URL for SEO (production URL)
+app._base_url = "https://pip-install-python.com"
 
 # Configure bot management policies
 app._robots_config = RobotsConfig(
@@ -127,6 +131,71 @@ def extract_source_files(markdown_content: str) -> List[str]:
     return [m.strip() for m in matches]
 
 
+def process_sourcetabs_directives(markdown_content: str) -> str:
+    """
+    Process .. sourcetabs:: directives and replace with actual file content.
+
+    Args:
+        markdown_content: Raw markdown with sourcetabs directives
+
+    Returns:
+        Processed markdown with file contents embedded
+    """
+    # Pattern to match .. sourcetabs::file_path
+    # Handles multi-line directives with options like :defaultExpanded: and :withExpandedButton:
+    pattern = r'^\.\. sourcetabs::(.+?)(?:\n\s+:.+?:.+?)*$'
+
+    # Language mapping for syntax highlighting
+    lang_map = {
+        'py': 'python', 'pyi': 'python',
+        'js': 'javascript', 'jsx': 'jsx',
+        'ts': 'typescript', 'tsx': 'tsx',
+        'css': 'css', 'scss': 'scss', 'sass': 'sass', 'less': 'less',
+        'html': 'html', 'htm': 'html', 'xml': 'xml',
+        'json': 'json',
+        'yaml': 'yaml', 'yml': 'yaml',
+        'md': 'markdown', 'rst': 'rst', 'txt': 'text',
+        'sh': 'bash', 'bash': 'bash',
+        'sql': 'sql', 'r': 'r',
+        'toml': 'toml', 'ini': 'ini', 'conf': 'conf',
+    }
+
+    def replace_sourcetabs(match):
+        file_path = match.group(1).strip()
+
+        try:
+            # Convert dots to slashes if needed (e.g., docs.dash_gauge.example → docs/dash_gauge/example.py)
+            if not file_path.endswith('.py'):
+                file_path = file_path.replace('.', '/') + '.py'
+
+            # Read the file content
+            full_path = Path(file_path)
+            content = full_path.read_text()
+
+            # Detect language from extension
+            ext = full_path.suffix.lstrip('.').lower()
+            language = lang_map.get(ext, ext if ext else 'text')
+
+            # Format as code block with file path annotation
+            result = f'\n```{language}\n'
+            result += f'# File: {file_path}\n\n'
+            result += content
+            if not content.endswith('\n'):
+                result += '\n'
+            result += '```\n'
+
+            return result
+
+        except FileNotFoundError:
+            return f'\n<!-- Error: File not found: {file_path} -->\n'
+        except Exception as e:
+            return f'\n<!-- Error reading {file_path}: {str(e)} -->\n'
+
+    # Replace all sourcetabs directives (including multi-line with options)
+    processed = re.sub(pattern, replace_sourcetabs, markdown_content, flags=re.MULTILINE)
+    return processed
+
+
 def get_source_file_metadata(markdown_content: str) -> List[dict]:
     """
     Extract metadata about each source file.
@@ -192,6 +261,8 @@ def serve_markdown_llms_txt(page_path):
 
                 # Process source directives to include actual file content
                 processed_content = process_source_directives(markdown_content)
+                # Also process sourcetabs directives
+                processed_content = process_sourcetabs_directives(processed_content)
 
                 # Format the output as llms.txt
                 output = f"# {page_name}\n\n"
@@ -247,7 +318,12 @@ def serve_markdown_page_json(page_path):
                             json.dumps(page_layout, cls=PlotlyJSONEncoder)
                         )
                 except Exception as e:
-                    layout_json = {"error": f"Could not serialize layout: {str(e)}"}
+                    # If serialization fails (e.g., DashDock components), provide metadata instead
+                    layout_json = {
+                        "error": f"Layout contains non-serializable components: {str(e)}",
+                        "component_type": type(page_layout).__name__ if page_layout else None,
+                        "note": "Full component tree not available in JSON format. Use the rendered page instead."
+                    }
 
                 # Create standard JSON response
                 response_data = {
@@ -280,6 +356,65 @@ def serve_markdown_page_json(page_path):
     abort(404)
 
 # ============================================================================
+# Page Chat SSE Streaming Endpoint
+# ============================================================================
+
+from lib.page_chat import PageChatHandler
+
+# Initialize page chat handler
+page_chat_handler = PageChatHandler(
+    name_content_map=NAME_CONTENT_MAP,
+    base_url=app._base_url
+)
+
+@app.server.route("/api/page-chat-stream")
+def page_chat_stream():
+    """
+    SSE endpoint for streaming AI chat responses.
+
+    Query parameters:
+        - page: Page path (e.g., "/pip/dash_gauge")
+        - question: User's question
+        - format: Response format ("markdown" or "code")
+        - session: Session ID (optional)
+    """
+    from flask import request, Response
+
+    page_path = request.args.get('page', '')
+    question = request.args.get('question', '')
+    response_format = request.args.get('format', 'markdown')
+    session_id = request.args.get('session', None)
+
+    if not page_path or not question:
+        return jsonify({
+            'error': 'Missing required parameters: page and question'
+        }), 400
+
+    def generate():
+        """Generator for SSE stream."""
+        try:
+            for chunk in page_chat_handler.stream_response(
+                page_path=page_path,
+                question=question,
+                response_format=response_format,
+                session_id=session_id
+            ):
+                # SSE format: data: <json>\n\n
+                yield f"data: {chunk}\n"
+        except Exception as e:
+            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+
+    return Response(
+        generate(),
+        mimetype='text/event-stream',
+        headers={
+            'Cache-Control': 'no-cache',
+            'X-Accel-Buffering': 'no',
+            'Connection': 'keep-alive'
+        }
+    )
+
+# ============================================================================
 
 # Add LLMS routes - enables llms.txt, page.json, architecture.txt, robots.txt, sitemap.xml
 add_llms_routes(app)
@@ -292,6 +427,9 @@ register_page_metadata(
 )
 
 # ============================================================================
+
+# Import chat callbacks to register them (chat-demo now uses unique page name to avoid conflicts)
+import callbacks.chat_callbacks  # noqa: F401
 
 app.layout = create_appshell(dash.page_registry.values())
 
@@ -317,4 +455,4 @@ def track_visitor():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port='8558')
+    app.run(debug=True, host='0.0.0.0', port='8502')

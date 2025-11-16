@@ -52,10 +52,10 @@ http://localhost:8553/pip/example/llms.txt  # Example page
 ### 1. Base URL (run.py:39)
 
 ```python
-app._base_url = "https://your-app-url.com"  # Update this!
+app._base_url = "https://pip-install-python.com"
 ```
 
-**Important:** Change this to your production URL for proper sitemap generation.
+**Important:** This is set to the production URL for proper sitemap generation.
 
 ### 2. Bot Policies (run.py:42-48)
 

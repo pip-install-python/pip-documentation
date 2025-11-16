@@ -1,0 +1,364 @@
+/**
+ * 404 Page Styles
+ * Glitch effects and animations
+ */
+
+/* Container styles */
+#not-found-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 195px);  /* Exact height: viewport - header (70px) - footer (60px) */
+    max-height: calc(100vh - 195px);
+    overflow: hidden;
+    transition: background 0.3s ease;
+}
+
+/* Light theme background */
+[data-mantine-color-scheme="light"] #not-found-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
+}
+
+/* Dark theme background */
+[data-mantine-color-scheme="dark"] #not-found-container {
+    background: linear-gradient(135deg, #000000 0%, #0a0a1f 50%, #000000 100%);
+}
+
+#not-found-content {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#not-found-content button,
+#not-found-content a {
+    pointer-events: auto;
+}
+
+/* Glitch text effect for 404 */
+.glitch-text {
+    position: relative;
+    color: #6366f1;
+    animation: glitch-text 1s ease-in-out infinite alternate;
+}
+
+@keyframes glitch-text {
+    0% {
+        text-shadow:
+            0.05em 0 0 rgba(255, 0, 0, 0.75),
+            -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+            0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    14% {
+        text-shadow:
+            0.05em 0 0 rgba(255, 0, 0, 0.75),
+            -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+            0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    15% {
+        text-shadow:
+            -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+            0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+            -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    49% {
+        text-shadow:
+            -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+            0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+            -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    50% {
+        text-shadow:
+            0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+            0.05em 0 0 rgba(0, 255, 0, 0.75),
+            0 -0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    99% {
+        text-shadow:
+            0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+            0.05em 0 0 rgba(0, 255, 0, 0.75),
+            0 -0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    100% {
+        text-shadow:
+            -0.025em 0 0 rgba(255, 0, 0, 0.75),
+            -0.025em -0.025em 0 rgba(0, 255, 0, 0.75),
+            -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+}
+
+/* Subtitle fade in */
+#not-found-subtitle {
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+[data-mantine-color-scheme="light"] #not-found-subtitle {
+    color: #495057 !important;
+}
+
+[data-mantine-color-scheme="dark"] #not-found-subtitle {
+    color: #e0e7ff !important;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Button animations */
+.home-button-404,
+.docs-button-404 {
+    animation: fadeInUp 1s ease-out 0.6s both;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.home-button-404:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+}
+
+.docs-button-404:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(6, 182, 212, 0.3);
+}
+
+/* Three.js canvas */
+#threejs-canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+}
+
+#threejs-canvas-container canvas {
+    display: block;
+    cursor: grab;
+}
+
+#threejs-canvas-container canvas:active {
+    cursor: grabbing;
+}
+
+/* Floating animation for content */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .glitch-text {
+        animation: none;
+        text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    }
+
+    #not-found-subtitle {
+        font-size: 18px !important;
+    }
+}
+
+/* Add scanline effect overlay */
+#not-found-container::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: scanlines 10s linear infinite;
+}
+
+@keyframes scanlines {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(20px);
+    }
+}
+
+/* Glow effect for text */
+#not-found-title,
+#not-found-subtitle {
+    text-shadow:
+        0 0 10px rgba(99, 102, 241, 0.3),
+        0 0 20px rgba(99, 102, 241, 0.2),
+        0 0 30px rgba(99, 102, 241, 0.1);
+}
+
+/* Prevent text selection on animated elements */
+.glitch-text {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+/* Black Hole Animation - Behind 404 text */
+#not-found-title {
+    position: relative;
+    z-index: 10;
+}
+
+/* Black hole core (event horizon) */
+#not-found-title::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        transparent 25%,
+        rgba(0, 0, 0, 0.9) 30%,
+        rgba(0, 0, 0, 1) 40%,
+        rgba(0, 0, 0, 1) 100%
+    );
+    border-radius: 50%;
+    z-index: -1;
+    animation: black-hole-pulse 3s ease-in-out infinite;
+}
+
+/* Accretion disk - outer ring with consuming material */
+#not-found-title::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    height: 320px;
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            rgba(99, 102, 241, 0.3) 30deg,
+            rgba(168, 85, 247, 0.4) 60deg,
+            rgba(236, 72, 153, 0.3) 90deg,
+            rgba(239, 68, 68, 0.2) 120deg,
+            transparent 150deg,
+            transparent 180deg,
+            rgba(99, 102, 241, 0.2) 210deg,
+            rgba(168, 85, 247, 0.3) 240deg,
+            rgba(236, 72, 153, 0.2) 270deg,
+            transparent 300deg,
+            transparent 360deg
+        );
+    border-radius: 50%;
+    z-index: -2;
+    animation: accretion-disk-spin 8s linear infinite;
+    filter: blur(3px);
+    opacity: 0.8;
+}
+
+/* Dark theme adjustments for black hole */
+[data-mantine-color-scheme="dark"] #not-found-title::before {
+    background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        transparent 25%,
+        rgba(0, 0, 0, 0.95) 30%,
+        rgba(0, 0, 0, 1) 40%,
+        rgba(10, 10, 31, 1) 100%
+    );
+}
+
+[data-mantine-color-scheme="dark"] #not-found-title::after {
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            rgba(99, 102, 241, 0.5) 30deg,
+            rgba(168, 85, 247, 0.6) 60deg,
+            rgba(236, 72, 153, 0.5) 90deg,
+            rgba(239, 68, 68, 0.4) 120deg,
+            transparent 150deg,
+            transparent 180deg,
+            rgba(99, 102, 241, 0.4) 210deg,
+            rgba(168, 85, 247, 0.5) 240deg,
+            rgba(236, 72, 153, 0.4) 270deg,
+            transparent 300deg,
+            transparent 360deg
+        );
+    opacity: 1;
+}
+
+/* Light theme adjustments for black hole */
+[data-mantine-color-scheme="light"] #not-found-title::before {
+    background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        transparent 25%,
+        rgba(30, 30, 50, 0.7) 30%,
+        rgba(20, 20, 40, 0.9) 40%,
+        rgba(10, 10, 30, 1) 100%
+    );
+}
+
+[data-mantine-color-scheme="light"] #not-found-title::after {
+    opacity: 0.6;
+}
+
+/* Animation: Accretion disk spinning (material being consumed) */
+@keyframes accretion-disk-spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Animation: Black hole pulsing (gravitational waves) */
+@keyframes black-hole-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow:
+            0 0 40px rgba(99, 102, 241, 0.3),
+            0 0 80px rgba(99, 102, 241, 0.2),
+            0 0 120px rgba(99, 102, 241, 0.1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow:
+            0 0 50px rgba(99, 102, 241, 0.4),
+            0 0 100px rgba(99, 102, 241, 0.3),
+            0 0 150px rgba(99, 102, 241, 0.2);
+    }
+}
+
+/* Responsive: Smaller black hole on mobile */
+@media (max-width: 768px) {
+    #not-found-title::before {
+        width: 120px;
+        height: 120px;
+    }
+
+    #not-found-title::after {
+        width: 250px;
+        height: 250px;
+    }
+}

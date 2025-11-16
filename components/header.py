@@ -17,6 +17,48 @@ def create_link(icon, href):
     )
 
 
+def create_other_apps_menu():
+    """Create menu for other Pip Install Python applications"""
+    return dmc.Menu(
+        [
+            dmc.MenuTarget(
+                dmc.Button(
+                    "Other Apps",
+                    variant="subtle",
+                    color="gray",
+                    size="sm",
+                    leftSection=DashIconify(icon="svg-spinners:blocks-scale", width=18),
+                )
+            ),
+            dmc.MenuDropdown(
+                [
+                    dmc.MenuItem(
+                        "Plotly.pro",
+                        leftSection=DashIconify(icon="simple-icons:plotly", width=16),
+                        href="https://plotly.pro",
+                        target="_blank",
+                    ),
+                    dmc.MenuItem(
+                        "ai-agent.buzz",
+                        leftSection=DashIconify(icon="mdi:robot-outline", width=16),
+                        href="https://ai-agent.buzz",
+                        target="_blank",
+                    ),
+                    dmc.MenuItem(
+                        "GeoMapIndex",
+                        leftSection=DashIconify(icon="mdi:map-marker-outline", width=16),
+                        href="https://dash.geomapindex.com",
+                        target="_blank",
+                    ),
+                ]
+            ),
+        ],
+        trigger="hover",
+        openDelay=100,
+        closeDelay=200,
+    )
+
+
 def create_search(data):
     """Create searchable dropdown for component navigation"""
     return dmc.Select(
@@ -56,21 +98,21 @@ def create_header(data):
                             id="drawer-hamburger-button",
                             variant="subtle",
                             size="lg",
-                            color="gray",
+                            color="#03c7e5",
                             hiddenFrom="md",
                         ),
                         dmc.Anchor(
                             dmc.Group(
                                 [
                                     html.Img(
-                                        src=get_asset_url('ddb.png'),
+                                        src=get_asset_url('apple-touch-icon.png'),
                                         style={'height': '36px', 'width': '36px'}
                                     ),
                                     dmc.Text(
-                                        "Dash Docs",
+                                        "Pip Docs",
                                         size="lg",
                                         fw=700,
-                                        c="#03c7e5",
+                                        c="light-dark(rgb(28, 126, 214), #74c0fc)",
                                         id="dash-docs-title",
                                     ),
                                 ],
@@ -83,10 +125,15 @@ def create_header(data):
                     gap="md",
                 ),
 
-                # Right section: Search + GitHub + Theme toggle
+                # Right section: Other Apps + Search + Discord + GitHub + Theme toggle
                 dmc.Group(
                     [
+                        create_other_apps_menu(),
                         create_search(data),
+                        create_link(
+                            "qlementine-icons:discord-fill-24",
+                            "https://discord.gg/e5s5uHWUHH",
+                        ),
                         create_link(
                             "radix-icons:github-logo",
                             "https://github.com/pip-install-python/Dash-Documentation-Boilerplate",

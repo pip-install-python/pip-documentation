@@ -27,41 +27,80 @@ ANALYTICS_FILE = Path(__file__).parent.parent / "visitor_analytics.json"
 
 
 def load_analytics():
-    """Load analytics data from JSON file."""
+    """Load analytics data from JSON file with error handling for concurrent access."""
     if ANALYTICS_FILE.exists():
-        with open(ANALYTICS_FILE, "r") as f:
-            data = json.load(f)
-
-            # Clean up any _reload-hash or internal Dash paths from existing data
-            clean_visits = []
-            for visit in data.get("visits", []):
-                path = visit.get("path", "")
-                # Filter out internal Dash paths
-                skip_paths = [
-                    '.css', '.js', '.png', '.jpg', '.ico', '_dash', '_reload-hash',
-                    '/_dash-update-component', '/_dash-layout', '/assets/', '[]'
-                ]
-                if not any(ext in path for ext in skip_paths):
-                    clean_visits.append(visit)
-
-            # Recalculate stats from clean visits
-            stats = {
-                "desktop": 0,
-                "mobile": 0,
-                "tablet": 0,
-                "bot": 0,
-                "total": 0
+        try:
+            with open(ANALYTICS_FILE, "r") as f:
+                data = json.load(f)
+        except json.JSONDecodeError as e:
+            # Handle race condition where file is being written while being read
+            print(f"JSON decode error (likely concurrent write): {e}")
+            # Return empty analytics data structure
+            return {
+                "visits": [],
+                "stats": {
+                    "desktop": 0,
+                    "mobile": 0,
+                    "tablet": 0,
+                    "bot": 0,
+                    "total": 0
+                }
+            }
+        except Exception as e:
+            print(f"Error loading analytics file: {e}")
+            return {
+                "visits": [],
+                "stats": {
+                    "desktop": 0,
+                    "mobile": 0,
+                    "tablet": 0,
+                    "bot": 0,
+                    "total": 0
+                }
             }
 
-            for visit in clean_visits:
-                device_type = visit.get("device_type", "desktop")
+        # Clean up any _reload-hash or internal Dash paths from existing data
+        clean_visits = []
+        for visit in data.get("visits", []):
+            path = visit.get("path", "")
+            # Filter out internal Dash paths
+            skip_paths = [
+                '.css', '.js', '.png', '.jpg', '.ico', '_dash', '_reload-hash',
+                '/_dash-update-component', '/_dash-layout', '/assets/', '[]'
+            ]
+            if not any(ext in path for ext in skip_paths):
+                clean_visits.append(visit)
+
+        # Recalculate stats from clean visits based on unique sessions
+        stats = {
+            "desktop": 0,
+            "mobile": 0,
+            "tablet": 0,
+            "bot": 0,
+            "total": 0
+        }
+
+        # Track unique sessions to count visitors, not page views
+        seen_sessions = set()
+
+        for visit in clean_visits:
+            session_id = visit.get("session_id")
+            device_type = visit.get("device_type", "desktop")
+
+            # Only count each session once
+            if session_id and session_id not in seen_sessions:
+                seen_sessions.add(session_id)
+                stats[device_type] = stats.get(device_type, 0) + 1
+                stats["total"] += 1
+            elif not session_id:
+                # Handle old visits without session_id (count them all for backwards compatibility)
                 stats[device_type] = stats.get(device_type, 0) + 1
                 stats["total"] += 1
 
-            return {
-                "visits": clean_visits,
-                "stats": stats
-            }
+        return {
+            "visits": clean_visits,
+            "stats": stats
+        }
 
     return {
         "visits": [],
@@ -161,8 +200,8 @@ def layout():
         # Header Section
         dmc.Group([
             create_stat_card(
-                label="Total Visits",
-                icon="📊",
+                label="Visitors",
+                icon="👥",
                 color="violet",
                 card_id="total-stat"
             ),
@@ -655,11 +694,12 @@ def update_bot_visits_table(data):
 
 
 def get_location_data(visits):
-    """Aggregate visitor location data for bubble map."""
+    """Aggregate visitor location data for bubble map, counting unique sessions only."""
     location_counts = {}
+    seen_sessions = {}  # Track which sessions we've already counted per location
 
     for visit in visits:
-        # Check if visit has location data
+        # Check if visit has location data (only first visit per session has this)
         if 'location' not in visit:
             continue
 
@@ -668,6 +708,7 @@ def get_location_data(visits):
         lon = location.get('longitude')
         city = location.get('city', 'Unknown')
         country = location.get('country', 'Unknown')
+        session_id = visit.get('session_id')
 
         if lat is None or lon is None:
             continue
@@ -675,6 +716,7 @@ def get_location_data(visits):
         # Create a unique key for each location
         location_key = f"{lat},{lon}"
 
+        # Initialize location entry if not exists
         if location_key not in location_counts:
             location_counts[location_key] = {
                 'latitude': lat,
@@ -682,14 +724,25 @@ def get_location_data(visits):
                 'city': city,
                 'country': country,
                 'count': 0,
-                'device_breakdown': {'desktop': 0, 'mobile': 0, 'tablet': 0, 'bot': 0}
+                'device_breakdown': {'desktop': 0, 'mobile': 0, 'tablet': 0, 'bot': 0},
+                'sessions': set()  # Track unique sessions for this location
             }
 
-        location_counts[location_key]['count'] += 1
-        device_type = visit.get('device_type', 'desktop')
-        location_counts[location_key]['device_breakdown'][device_type] += 1
+        # Only count each session once per location
+        if session_id and session_id not in location_counts[location_key]['sessions']:
+            location_counts[location_key]['sessions'].add(session_id)
+            location_counts[location_key]['count'] += 1
+            device_type = visit.get('device_type', 'desktop')
+            location_counts[location_key]['device_breakdown'][device_type] += 1
 
-    return list(location_counts.values())
+    # Remove sessions set before returning (not JSON serializable)
+    result = []
+    for loc in location_counts.values():
+        loc_copy = loc.copy()
+        loc_copy.pop('sessions', None)
+        result.append(loc_copy)
+
+    return result
 
 
 # Callback to update location map
@@ -723,6 +776,21 @@ def update_location_map(data):
     lons = [loc['longitude'] for loc in location_data]
     counts = [loc['count'] for loc in location_data]
 
+    # Calculate proportional bubble sizes using square root scaling
+    # This makes the area of the bubble proportional to the count
+    import numpy as np
+    max_count = max(counts)
+    min_count = min(counts)
+
+    # Normalize counts and apply square root for better visual proportionality
+    if max_count > min_count:
+        # Scale sizes between 8 and 40 with square root scaling for proportionality
+        normalized_counts = [(c - min_count) / (max_count - min_count) for c in counts]
+        bubble_sizes = [8 + np.sqrt(nc) * 32 for nc in normalized_counts]
+    else:
+        # All counts are the same
+        bubble_sizes = [20 for _ in counts]
+
     # Create hover text with device breakdown
     hover_texts = []
     for loc in location_data:
@@ -744,7 +812,7 @@ def update_location_map(data):
         text=hover_texts,
         mode='markers',
         marker=dict(
-            size=[count * 3 + 10 for count in counts],  # Scale bubble size
+            size=bubble_sizes,
             color=counts,
             colorscale='Viridis',
             showscale=True,
@@ -753,8 +821,9 @@ def update_location_map(data):
                 thickness=15,
                 len=0.7
             ),
-            line=dict(width=0.5, color='rgba(255, 255, 255, 0.8)'),
-            sizemode='diameter'
+            line=dict(width=1, color='rgba(255, 255, 255, 0.9)'),
+            sizemode='diameter',
+            opacity=0.85
         ),
         hovertemplate='%{text}<extra></extra>'
     ))

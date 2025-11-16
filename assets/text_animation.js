@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Text animation handler loaded');
 
     // Configuration
-    const TEXT_TO_TYPE = "Dash Docs";
+    const TEXT_TO_TYPE = "Pip Docs";
     const TYPING_SPEED = 80; // milliseconds per character
     const INITIAL_DELAY = 500; // delay before starting animation
 

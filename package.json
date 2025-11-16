@@ -1,7 +1,7 @@
 {
-    "name": "dash_documentation_boilerplate",
+    "name": "pip_documentation",
     "version": "0.2.0",
-    "description": "Plotly Dash Documentation based on Dash Mantine Components",
+    "description": "home for https://pip-install-python.com documentation.",
     "main": "index.ts",
     "repository": {
         "type": "git",
@@ -40,7 +40,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
-    "author": "Snehil Vijay <snehilvj@outlook.com>",
+    "author": "Pip Install Python <pipinstallpython@gmail.com>",
     "license": "MIT",
     "dependencies": {
         "@mantine/carousel": "8.3.6",
