@@ -39,4 +39,4 @@ anthropic==0.73.0
 python-dotenv==1.2.1
 
 # Production Server
-gunicorn==23.0.0
+gunicorn>=21.2.0,<22.0.0
