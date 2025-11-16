@@ -104,9 +104,11 @@ def create_header(data):
                         dmc.Anchor(
                             dmc.Group(
                                 [
-                                    html.Img(
+                                    dmc.Image(
                                         src=get_asset_url('apple-touch-icon.png'),
-                                        style={'height': '36px', 'width': '36px'}
+                                        h='36px',
+                                        w='36px',
+                                        visibleFrom="sm",
                                     ),
                                     dmc.Text(
                                         "Pip Docs",
@@ -114,6 +116,7 @@ def create_header(data):
                                         fw=700,
                                         c="light-dark(rgb(28, 126, 214), #74c0fc)",
                                         id="dash-docs-title",
+                                        visibleFrom="sm",
                                     ),
                                 ],
                                 gap="sm",
