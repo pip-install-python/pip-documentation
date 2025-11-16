@@ -1,31 +1,42 @@
-flask>=3.0.0
-importlib-metadata
-nest-asyncio
-pandas>=1.2.3
-plotly>=5.0.0
-requests
-retrying
-setuptools
-typing-extensions>=4.1.1
+# Pip Install Python Documentation - Production Requirements
+# Generated: 2025-11-16
+# Python 3.11+
 
-# Core Dash 3.x (components now included in dash package)
-dash>=3.0.0
-dash-iconify>=0.1.2
-dash-mantine-components>=2.4.0
-dash-ag-grid
-dash-dock
-dash-resizable-panels
+# Core Dash Framework
+dash==3.3.0
+dash-mantine-components==2.4.0
+dash-iconify==0.1.2
+dash-ag-grid==32.3.2
 
-# Documentation & Utilities
-requests>=2.27.1
-python-frontmatter>=1.0.0
-markdown2dash
-pydantic>=2.3.0
+# Custom Dash Components (used in project)
+dash-dock==0.0.1
+dash-resizable-panels==0.1.0
+dash-fullcalendar>=0.1.0
+dash-emoji-mart
+dash-image-gallery
+dash_excalidraw>=0.0.1
+dash_gauge>=0.0.2
+dash-planet==0.0.2
+dash-model-viewer
+dash-pannellum>=0.0.3
+dash-insta-stories
 
-# AI/LLM Integration & SEO
-dash-improve-my-llms>=0.3.0
-anthropic>=0.39.0
-python-dotenv>=1.0.0
+# Documentation System
+python-frontmatter==1.1.0
+markdown2dash==0.1.2
+
+# Data & Validation
+pandas==2.3.3
+plotly==6.4.0
+pydantic==2.12.4
+
+# HTTP & APIs
+requests==2.32.5
+
+# AI/LLM Integration
+dash-improve-my-llms==0.3.0
+anthropic==0.73.0
+python-dotenv==1.2.1
 
 # Production Server
-gunicorn>=21.2.0
+gunicorn==23.0.0
