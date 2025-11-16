@@ -237,7 +237,7 @@ logger.info("[Chat Callbacks] ✓ Registered clear_chat callback")
 clientside_callback(
     """
     function(trigger_data) {
-        console.log('[Chat Clientside] Callback triggered:', {trigger_data});
+        console.log('[Chat Clientside] Callback triggered:', trigger_data);
 
         // Don't process if no trigger data
         if (!trigger_data || !trigger_data.question) {
@@ -252,14 +252,21 @@ clientside_callback(
 
         console.log('[Chat Clientside] Starting SSE for:', {page_name, page_path, question, viewport});
 
-        // Start SSE connection using the global function
-        if (typeof window.startChatSSE === 'function') {
-            setTimeout(() => {
+        // Retry mechanism to wait for chat.js to load
+        function tryStartSSE(retries = 0, maxRetries = 10) {
+            if (typeof window.startChatSSE === 'function') {
+                console.log('[Chat] startChatSSE function found, starting chat...');
                 window.startChatSSE(page_name, page_path, question, viewport);
-            }, 100);
-        } else {
-            console.error('[Chat] startChatSSE function not found');
+            } else if (retries < maxRetries) {
+                const delay = Math.min(100 * Math.pow(2, retries), 2000); // Exponential backoff, max 2s
+                console.log(`[Chat] Waiting for startChatSSE (attempt ${retries + 1}/${maxRetries}, delay: ${delay}ms)...`);
+                setTimeout(() => tryStartSSE(retries + 1, maxRetries), delay);
+            } else {
+                console.error('[Chat] startChatSSE function not found after', maxRetries, 'retries. chat.js may not have loaded.');
+            }
         }
+
+        tryStartSSE();
 
         return window.dash_clientside.no_update;
     }

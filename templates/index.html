@@ -1,26 +1,320 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        {%metas%}
-        <title>{%title%}</title>
-        {%favicon%}
-        {%css%}
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WYY9JHMP2"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+<html lang="en">
+<head>
+    <!-- ========================================================================
+         ANALYTICS SECTION
+         Configure your analytics tracking here
+         ======================================================================== -->
 
-          gtag('config', 'G-6WYY9JHMP2');
-        </script>
-    </head>
-    <body>
-        {%app_entry%}
-        <footer>
-            {%config%}
-            {%scripts%}
-            {%renderer%}
-        </footer>
-    </body>
+    <!-- Google Analytics (G-6WYY9JHMP2) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6WYY9JHMP2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6WYY9JHMP2');
+    </script>
+
+    <!-- ========================================================================
+         BASIC META TAGS
+         Essential meta tags for character encoding and responsive design
+         ======================================================================== -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- ========================================================================
+         PRIMARY META TAGS
+         These are the main tags that define your site for search engines
+         Customize these for your project
+         ======================================================================== -->
+
+    <!-- Title - Shows in browser tab and search results (50-60 chars optimal) -->
+    <title>Pip Install Python - Open Source Dash Packages & Documentation</title>
+
+    <!-- Main title for SEO - should match or complement the <title> tag -->
+    <meta name="title" content="Pip Install Python - Custom Dash Components Documentation">
+
+    <!-- Description - Shows in search results (150-160 chars optimal) -->
+    <meta name="description" content="Comprehensive documentation for 18+ custom Dash components. Interactive examples, live demos, and complete guides for dash-gauge, dash-model-viewer, dash-pannellum, and more.">
+
+    <!-- Keywords - Helps search engines understand your content -->
+    <meta name="keywords" content="Dash components, Python Dash, Plotly Dash, custom components, dash-gauge, dash-model-viewer, dash-pannellum, dash-planet, dash-fullcalendar, dash-emoji-mart, interactive dashboards, Python visualization, Dash Mantine Components, PyPI packages">
+
+    <!-- Author - Organization name -->
+    <meta name="author" content="Pip Install Python LLC">
+
+    <!-- Robots - Tell search engines how to index your site -->
+    <meta name="robots" content="index, follow">
+
+    <!-- Language - Specify the primary language of your content -->
+    <meta name="language" content="English">
+
+    <!-- ========================================================================
+         OPEN GRAPH / FACEBOOK META TAGS
+         These control how your site appears when shared on Facebook, LinkedIn, etc.
+         Learn more: https://ogp.me/
+         ======================================================================== -->
+
+    <meta property="og:type" content="website">
+
+    <!-- OG URL - The canonical URL of your site -->
+    <meta property="og:url" content="https://pip-install-python.com/">
+
+    <!-- OG Title - Title shown in social media shares (max 60 chars) -->
+    <meta property="og:title" content="Pip Install Python - Custom Dash Components">
+
+    <!-- OG Description - Description shown in social shares (max 200 chars) -->
+    <meta property="og:description" content="Interactive documentation for 18+ custom Dash components. Build beautiful dashboards with dash-gauge, dash-model-viewer, dash-pannellum, and more.">
+
+    <!-- OG Image - Preview image for social shares
+         Requirements: 1200x630px, JPG/PNG/GIF, < 8MB -->
+    <meta property="og:image" content="https://pip-install-python.com/assets/dash_documentation_boilerplate.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- OG Site Name - Your site/brand name -->
+    <meta property="og:site_name" content="Pip Install Python">
+
+    <!-- ========================================================================
+         TWITTER CARD META TAGS
+         Control how your site appears when shared on Twitter/X
+         Learn more: https://developer.twitter.com/en/docs/twitter-for-websites/cards
+         ======================================================================== -->
+
+    <!-- Card type - summary_large_image shows large preview -->
+    <meta property="twitter:card" content="summary_large_image">
+
+    <!-- Twitter URL - Same as your canonical URL -->
+    <meta property="twitter:url" content="https://pip-install-python.com/">
+
+    <!-- Twitter Title - Title for Twitter shares -->
+    <meta property="twitter:title" content="Pip Install Python - Custom Dash Components">
+
+    <!-- Twitter Description - Description for Twitter shares -->
+    <meta property="twitter:description" content="Interactive documentation for 18+ custom Dash components. Build beautiful dashboards with dash-gauge, dash-model-viewer, dash-pannellum, and more.">
+
+    <!-- Twitter Image - Same as OG image (1200x630px recommended) -->
+    <meta property="twitter:image" content="https://pip-install-python.com/assets/dash_documentation_boilerplate.png">
+
+    <!-- ========================================================================
+         FAVICON CONFIGURATION
+         Icons for browser tabs, bookmarks, and mobile home screens
+         ======================================================================== -->
+
+    <!-- Standard favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+
+    <!-- Apple Touch Icon - Shows when site is added to iOS home screen (180x180) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+    <!-- Web App Manifest - Defines how your app appears when installed -->
+    <link rel="manifest" href="/assets/site.webmanifest">
+
+    <!-- Theme color - Sets the browser UI color on mobile (teal brand color) -->
+    <meta name="theme-color" content="#12B886">
+
+    <!-- ========================================================================
+         CANONICAL URL
+         Tells search engines which version of a page is the "main" one
+         Important for preventing duplicate content issues
+         ======================================================================== -->
+
+    <link rel="canonical" href="https://pip-install-python.com">
+
+    <!-- ========================================================================
+         SEARCH ENGINE VERIFICATION
+         Verify ownership of your site with Google, Bing, etc.
+         ======================================================================== -->
+
+    <!-- Google Search Console
+         Get your code from: https://search.google.com/search-console -->
+    <!-- <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE"> -->
+
+    <!-- Bing Webmaster Tools
+         Get your code from: https://www.bing.com/webmasters -->
+    <!-- <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE"> -->
+
+    <!-- ========================================================================
+         STRUCTURED DATA (Schema.org)
+         Helps search engines understand your content and show rich results
+         Learn more: https://schema.org/
+         Test your markup: https://search.google.com/test/rich-results
+         ======================================================================== -->
+
+    <!-- Organization Schema - Defines your organization/brand -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Pip Install Python LLC",
+        "description": "Provider of custom Dash components and Python visualization libraries for building interactive web applications and dashboards.",
+        "url": "https://pip-install-python.com",
+        "logo": "https://pip-install-python.com/assets/logo.svg",
+        "sameAs": [
+            "https://github.com/pip-install-python",
+            "https://www.youtube.com/@PipInstallPython",
+            "https://www.linkedin.com/in/austin-k-274140161/",
+            "https://plotly.pro",
+            "https://ai-agent.buzz",
+            "https://dash.geomapindex.com"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "austin@pip-install-python.com",
+            "contactType": "customer support"
+        }
+    }
+    </script>
+
+    <!-- Software Application Schema - Defines your documentation platform -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Pip Install Python Documentation",
+        "description": "Comprehensive documentation platform for 18+ custom Dash components including dash-gauge, dash-model-viewer, dash-pannellum, dash-planet, and more. Features live examples, interactive demos, and complete API references.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Pip Install Python LLC"
+        },
+        "softwareVersion": "1.0.0",
+        "programmingLanguage": "Python"
+    }
+    </script>
+
+    <!-- ========================================================================
+         LLM DISCOVERY META TAGS
+         These tags help AI assistants discover and use your documentation
+         Part of dash-improve-my-llms integration
+         ======================================================================== -->
+
+    <meta name="llms-architecture" content="https://pip-install-python.com/sitemap.xml">
+    <meta name="llms-architecture" content="https://pip-install-python.com/architecture.txt">
+    <meta name="llms-page-json" content="https://pip-install-python.com/page.json">
+    <meta name="llms-txt" content="https://pip-install-python.com/llms.txt">
+    <meta name="llms-github-repo" content="https://github.com/pip-install-python">
+
+    <!-- ========================================================================
+         PERFORMANCE OPTIMIZATION
+         Preconnect to external domains to speed up resource loading
+         ======================================================================== -->
+
+    <!-- Google Fonts - Inter font family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Analytics -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <!-- CDNs for marked.js and other libraries -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <!-- ========================================================================
+         DASH-SPECIFIC TEMPLATE TAGS
+         These are required by Dash - DO NOT MODIFY
+         ======================================================================== -->
+
+    {%metas%}
+    <title>{%title%}</title>
+    {%favicon%}
+    {%css%}
+
+    <!-- ========================================================================
+         NO-JAVASCRIPT FALLBACK
+         Content shown to users/bots when JavaScript is disabled
+         Provides direct access to documentation for search engines and LLMs
+         ======================================================================== -->
+
+    <noscript>
+        <div style="padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif; max-width: 900px; margin: 0 auto; line-height: 1.7; color: #1a1b1e;">
+            <h1 style="color: #12B886; font-size: 2.5rem; margin-bottom: 0.5rem;">Pip Install Python Documentation</h1>
+            <p style="font-size: 1.125rem; color: #495057; margin-bottom: 2rem;"><strong>Custom Dash Components & Interactive Dashboards</strong></p>
+
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 1rem; margin-bottom: 2rem; border-radius: 4px;">
+                <strong>⚠️ JavaScript Required:</strong> This application requires JavaScript to display interactive examples and documentation.
+            </div>
+
+            <h2 style="color: #1a1b1e; font-size: 1.75rem; margin-top: 2rem; margin-bottom: 1rem;">📚 For AI/LLM Access and Documentation:</h2>
+            <p>This site provides comprehensive documentation in multiple formats optimized for both humans and AI assistants:</p>
+
+            <ul style="margin: 1.5rem 0; line-height: 2; font-size: 1rem;">
+                <li><a href="https://pip-install-python.com/llms.txt" style="color: #12B886; text-decoration: none; font-weight: 600;"><strong>llms.txt</strong></a> - LLM-friendly documentation format</li>
+                <li><a href="https://pip-install-python.com/page.json" style="color: #12B886; text-decoration: none; font-weight: 600;"><strong>page.json</strong></a> - Technical architecture and components</li>
+                <li><a href="https://pip-install-python.com/architecture.txt" style="color: #12B886; text-decoration: none; font-weight: 600;"><strong>architecture.txt</strong></a> - Application structure overview</li>
+                <li><a href="https://pip-install-python.com/sitemap.xml" style="color: #12B886; text-decoration: none; font-weight: 600;"><strong>sitemap.xml</strong></a> - Complete site structure for search engines</li>
+                <li><a href="https://pip-install-python.com/robots.txt" style="color: #12B886; text-decoration: none; font-weight: 600;"><strong>robots.txt</strong></a> - Crawler instructions</li>
+            </ul>
+
+            <h2 style="color: #1a1b1e; font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem;">🎯 18+ Custom Dash Components:</h2>
+
+            <h3 style="color: #495057; font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">Currently Maintained:</h3>
+            <ul style="margin: 1rem 0; line-height: 1.8;">
+                <li><strong>dash-gauge</strong> - Beautiful gauge and meter components</li>
+                <li><strong>dash-model-viewer</strong> - Interactive 3D model viewer</li>
+                <li><strong>dash-pannellum</strong> - 360° panorama and virtual tour viewer</li>
+                <li><strong>dash-planet</strong> - Interactive globe and earth visualization</li>
+                <li><strong>dash-fullcalendar</strong> - Full-featured calendar component</li>
+                <li><strong>dash-emoji-mart</strong> - Emoji picker and selector</li>
+                <li><strong>dash-image-gallery</strong> - Responsive image gallery</li>
+                <li><strong>dash-insta-stories</strong> - Instagram-style stories viewer</li>
+                <li><strong>dash-dock</strong> - Dockable panel layouts</li>
+                <li><strong>dash-excalidraw</strong> - Collaborative whiteboard</li>
+                <li><strong>dash-summernote</strong> - Rich text WYSIWYG editor</li>
+            </ul>
+
+            <h2 style="color: #1a1b1e; font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem;">✨ Key Features:</h2>
+            <ul style="margin: 1rem 0; line-height: 1.8;">
+                <li><strong>Interactive Examples:</strong> Live demos with working code for every component</li>
+                <li><strong>Markdown Documentation:</strong> Easy-to-read guides with custom directives</li>
+                <li><strong>AI Chat Integration:</strong> Page-specific AI assistant with context awareness</li>
+                <li><strong>PyPI Statistics:</strong> Real-time download metrics across all packages</li>
+                <li><strong>Dark/Light Themes:</strong> Beautiful theme switching with automatic persistence</li>
+                <li><strong>Mobile Responsive:</strong> Optimized for all devices and screen sizes</li>
+                <li><strong>LLM-Friendly:</strong> Structured data formats for AI understanding</li>
+            </ul>
+
+            <h2 style="color: #1a1b1e; font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem;">🔗 Resources:</h2>
+            <ul style="margin: 1rem 0; line-height: 1.8;">
+                <li><a href="https://github.com/pip-install-python" style="color: #12B886; text-decoration: none;">GitHub Organization</a></li>
+                <li><a href="https://www.youtube.com/@PipInstallPython" style="color: #12B886; text-decoration: none;">YouTube Channel</a></li>
+                <li><a href="https://pypi.org/user/pip-install-python/" style="color: #12B886; text-decoration: none;">PyPI Packages</a></li>
+            </ul>
+
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #dee2e6; color: #868e96; font-size: 0.875rem;">
+                <p><strong>Made with ❤️ by Pip Install Python LLC</strong></p>
+                <p>All packages are open source and available on PyPI. Star us on GitHub if you find our work useful! ⭐</p>
+            </div>
+        </div>
+    </noscript>
+
+</head>
+<body>
+    <!-- ========================================================================
+         APPLICATION ENTRY POINT
+         This is where your Dash application renders
+         DO NOT MODIFY
+         ======================================================================== -->
+
+    {%app_entry%}
+
+    <!-- ========================================================================
+         DASH FOOTER SCRIPTS
+         Required Dash scripts and configuration
+         DO NOT MODIFY
+         ======================================================================== -->
+
+    <footer>
+        {%config%}
+        {%scripts%}
+        {%renderer%}
+    </footer>
+</body>
 </html>

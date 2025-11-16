@@ -223,4 +223,5 @@ window.addEventListener('hashchange', function() {
     }
 });
 
-console.log('[Chat] Client-side chat module loaded');
+console.log('[Chat] Client-side chat module loaded successfully');
+console.log('[Chat] window.startChatSSE function available:', typeof window.startChatSSE === 'function');
