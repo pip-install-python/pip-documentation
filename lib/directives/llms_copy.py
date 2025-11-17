@@ -46,7 +46,7 @@ class LlmsCopy(BaseDirective):
                 className="llms-copy-button",  # Add class for JS to find
             ),
             label="Copy llms.txt URL for AI assistants",
-            position="top",
+            position="right",
             withArrow=True
         )
 

@@ -430,6 +430,41 @@ register_page_metadata(
 
 # Import chat callbacks to register them (chat-demo now uses unique page name to avoid conflicts)
 import callbacks.chat_callbacks  # noqa: F401
+import callbacks.advertising_callbacks  # noqa: F401
+
+# ============================================================================
+# Advertising Click Tracking API
+# ============================================================================
+
+from lib.advertising import track_click as ad_track_click
+
+@app.server.route("/api/track-ad-click", methods=['POST'])
+def track_ad_click_endpoint():
+    """
+    API endpoint to track advertisement clicks.
+
+    Expected JSON body:
+        - campaign_id: ID of the campaign clicked
+        - page: Page where click occurred
+        - timestamp: ISO timestamp of click
+    """
+    try:
+        data = request.get_json()
+        campaign_id = data.get('campaign_id')
+        page = data.get('page')
+        session_id = request.headers.get('X-Session-ID')
+
+        if campaign_id and page:
+            ad_track_click(campaign_id, page, session_id)
+            return jsonify({"status": "success"}), 200
+        else:
+            return jsonify({"error": "Missing required fields"}), 400
+
+    except Exception as e:
+        print(f"[Advertising API] Error tracking click: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# ============================================================================
 
 app.layout = create_appshell(dash.page_registry.values())
 

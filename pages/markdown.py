@@ -17,6 +17,7 @@ from lib.directives.kwargs import Kwargs
 from lib.directives.llms_copy import LlmsCopy
 from lib.directives.source import SC, SourceTabs
 from lib.directives.toc import TOC
+from lib.advertising import create_ad_component
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -335,6 +336,10 @@ def create_dock_layout(content_components, toc_component, page_name, page_path):
     else:
         toc_content = dmc.Text("No table of contents available", c="dimmed", size="sm")
 
+    # Create advertisement component
+    mobile_ad = create_ad_component(page_name, viewport="mobile")
+    desktop_ad = create_ad_component(page_name, viewport="desktop")
+
     # Create tab components WITH children
     # Each tab gets its own instance of the content (can't reuse component instances)
     mobile_tab_components = [
@@ -349,7 +354,12 @@ def create_dock_layout(content_components, toc_component, page_name, page_path):
         dash_dock.Tab(
             id=f"toc-mobile-{page_name}",
             children=dmc.Box(
-                children=toc_content,
+                children=[
+                    # TOC content
+                    toc_content,
+                    # Advertisement below TOC
+                    mobile_ad
+                ],
                 p="md",
                 style={"height": "100%", "overflow": "auto"}
             )
@@ -372,7 +382,12 @@ def create_dock_layout(content_components, toc_component, page_name, page_path):
         dash_dock.Tab(
             id=f"toc-desktop-{page_name}",
             children=dmc.Box(
-                children=toc_content,
+                children=[
+                    # TOC content
+                    toc_content,
+                    # Advertisement below TOC
+                    desktop_ad
+                ],
                 p="md",
                 style={"height": "100%", "overflow": "auto"}
             )

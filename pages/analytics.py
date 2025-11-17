@@ -13,6 +13,9 @@ from collections import Counter
 import dash_ag_grid as dag
 import plotly.graph_objects as go
 
+# Import advertising analytics
+from lib.ad_analytics import get_campaign_performance, get_total_stats, get_clicks_by_page
+
 # Register page
 register_page(
     __name__,
@@ -114,6 +117,28 @@ def load_analytics():
     }
 
 
+def load_ad_analytics():
+    """Load advertising analytics data on page load."""
+    try:
+        return {
+            'total_stats': get_total_stats(),
+            'campaign_performance': get_campaign_performance(),
+            'clicks_by_page': get_clicks_by_page()
+        }
+    except Exception as e:
+        print(f"Error loading advertising analytics: {e}")
+        return {
+            'total_stats': {
+                'total_clicks': 0,
+                'total_impressions': 0,
+                'overall_ctr': 0,
+                'active_campaigns': 0
+            },
+            'campaign_performance': [],
+            'clicks_by_page': []
+        }
+
+
 def get_bot_visits_by_type(visits):
     """Get bot visits grouped by bot type."""
     bot_visits = [v for v in visits if v["device_type"] == "bot"]
@@ -196,6 +221,9 @@ def layout():
 
         # Store for analytics data (load initial data)
         dcc.Store(id='analytics-data-store', data=load_analytics()),
+
+        # Store for advertising analytics data (load initial data)
+        dcc.Store(id='ad-analytics-data-store', data=load_ad_analytics()),
 
         # Header Section
         dmc.Group([
@@ -341,6 +369,73 @@ def layout():
                 ], gap="md"),
             ], p="lg", radius="md", withBorder=True, shadow="sm"),
         ], gap="lg"),
+
+        # Advertising Analytics Section
+        dmc.Divider(label="Advertising Analytics", labelPosition="center", my="xl", size="lg"),
+
+        dmc.Group([
+            dmc.Stack([
+                dmc.Title("Ad Campaign Performance", order=2, className="m2d-heading"),
+                dmc.Text(
+                    "Track advertisement impressions, clicks, and campaign performance",
+                    size="lg",
+                    c="dimmed",
+                    className="m2d-paragraph"
+                ),
+            ], gap=4),
+        ], justify="space-between", align="flex-start", mb="xl"),
+
+        # Ad Stats Cards
+        dmc.SimpleGrid(
+            cols={"base": 1, "xs": 2, "sm": 4},
+            spacing="lg",
+            mb="xl",
+            children=[
+                create_stat_card(
+                    label="Total Impressions",
+                    icon="👁️",
+                    color="blue",
+                    card_id="ad-impressions-stat"
+                ),
+                create_stat_card(
+                    label="Total Clicks",
+                    icon="🖱️",
+                    color="green",
+                    card_id="ad-clicks-stat"
+                ),
+                create_stat_card(
+                    label="CTR %",
+                    icon="📊",
+                    color="violet",
+                    card_id="ad-ctr-stat"
+                ),
+                create_stat_card(
+                    label="Active Campaigns",
+                    icon="🎯",
+                    color="orange",
+                    card_id="ad-campaigns-stat"
+                ),
+            ]
+        ),
+
+        # Ad Campaign Performance Table
+        dmc.Paper([
+            dmc.Stack([
+                dmc.Title("Campaign Performance", order=3),
+                html.Div(id="ad-campaigns-table-container"),
+            ], gap="md"),
+        ], p="lg", radius="md", withBorder=True, shadow="sm", mb="lg"),
+
+        # Clicks by Page
+        dmc.Paper([
+            dmc.Stack([
+                dmc.Stack([
+                    dmc.Title("Ad Clicks by Page", order=3),
+                    dmc.Text("Which pages generate the most ad clicks", size="sm", c="dimmed"),
+                ], gap=4),
+                html.Div(id="ad-clicks-by-page-container"),
+            ], gap="md"),
+        ], p="lg", radius="md", withBorder=True, shadow="sm"),
 
     ], size="xl", py="xl")
 
@@ -843,3 +938,178 @@ def update_location_map(data):
     )
 
     return dcc.Graph(figure=fig, config={'displayModeBar': False})
+
+
+# ============================================================================
+# Advertising Analytics Callbacks
+# ============================================================================
+
+# Callback to load advertising analytics data periodically
+@callback(
+    Output('ad-analytics-data-store', 'data'),
+    Input('analytics-interval', 'n_intervals')
+)
+def update_ad_analytics_data(n):
+    """Load fresh advertising analytics data."""
+    return {
+        'total_stats': get_total_stats(),
+        'campaign_performance': get_campaign_performance(),
+        'clicks_by_page': get_clicks_by_page()
+    }
+
+
+# Callback to update advertising stats cards
+@callback(
+    [
+        Output('ad-impressions-stat-value', 'children'),
+        Output('ad-clicks-stat-value', 'children'),
+        Output('ad-ctr-stat-value', 'children'),
+        Output('ad-campaigns-stat-value', 'children'),
+    ],
+    Input('ad-analytics-data-store', 'data')
+)
+def update_ad_stats(data):
+    """Update advertising statistics cards."""
+    if not data:
+        return "0", "0", "0%", "0"
+
+    stats = data.get('total_stats', {})
+    return (
+        f"{stats.get('total_impressions', 0):,}",
+        f"{stats.get('total_clicks', 0):,}",
+        f"{stats.get('overall_ctr', 0)}%",
+        str(stats.get('active_campaigns', 0))
+    )
+
+
+# Callback to update campaign performance table
+@callback(
+    Output('ad-campaigns-table-container', 'children'),
+    Input('ad-analytics-data-store', 'data')
+)
+def update_ad_campaigns_table(data):
+    """Update advertising campaigns performance table."""
+    if not data:
+        return dmc.Text("Loading...", c="dimmed", fs="italic")
+
+    campaigns = data.get('campaign_performance', [])
+
+    if not campaigns:
+        return dmc.Text("No advertising campaigns configured yet.", c="dimmed", fs="italic")
+
+    # Prepare data for AG Grid
+    row_data = []
+    for campaign in campaigns:
+        row_data.append({
+            'campaign': campaign['name'],
+            'impressions': campaign['impressions'],
+            'clicks': campaign['clicks'],
+            'ctr': f"{campaign['ctr']}%",
+            'status': 'Active' if campaign['active'] else 'Inactive',
+            'url': campaign['url']
+        })
+
+    # Define column definitions
+    column_defs = [
+        {
+            'field': 'campaign',
+            'headerName': 'Campaign',
+            'width': 200,
+            'sortable': True,
+            'filter': True,
+        },
+        {
+            'field': 'impressions',
+            'headerName': 'Impressions',
+            'width': 130,
+            'sortable': True,
+            'filter': 'agNumberColumnFilter',
+            'type': 'numericColumn',
+        },
+        {
+            'field': 'clicks',
+            'headerName': 'Clicks',
+            'width': 100,
+            'sortable': True,
+            'filter': 'agNumberColumnFilter',
+            'type': 'numericColumn',
+        },
+        {
+            'field': 'ctr',
+            'headerName': 'CTR',
+            'width': 100,
+            'sortable': True,
+        },
+        {
+            'field': 'status',
+            'headerName': 'Status',
+            'width': 100,
+            'sortable': True,
+            'filter': True,
+        },
+        {
+            'field': 'url',
+            'headerName': 'URL',
+            'flex': 1,
+            'sortable': True,
+            'filter': True,
+        }
+    ]
+
+    return dag.AgGrid(
+        id='ad-campaigns-grid',
+        rowData=row_data,
+        columnDefs=column_defs,
+        defaultColDef={
+            'resizable': True,
+            'sortable': True,
+            'filter': True,
+        },
+        dashGridOptions={
+            'pagination': True,
+            'paginationPageSize': 10,
+            'domLayout': 'autoHeight',
+            'animateRows': True,
+        },
+        style={'height': 'auto'},
+        className='ag-theme-alpine'
+    )
+
+
+# Callback to update clicks by page chart
+@callback(
+    Output('ad-clicks-by-page-container', 'children'),
+    Input('ad-analytics-data-store', 'data')
+)
+def update_ad_clicks_by_page(data):
+    """Update advertising clicks by page chart."""
+    if not data:
+        return dmc.Center(dmc.Text("Loading...", c="dimmed", fs="italic"), h=300)
+
+    clicks_data = data.get('clicks_by_page', [])
+
+    if not clicks_data:
+        return dmc.Center(
+            dmc.Text("No ad clicks yet. Clicks will be tracked as users interact with advertisements.",
+                    c="dimmed", fs="italic"),
+            h=300
+        )
+
+    # Prepare data for bar chart
+    chart_data = [
+        {"page": item['page'], "clicks": item['clicks']}
+        for item in clicks_data[:10]  # Top 10 pages
+    ]
+
+    return dmc.BarChart(
+        data=chart_data,
+        dataKey="page",
+        series=[{"name": "clicks", "color": "green.6"}],
+        h=300,
+        orientation="horizontal",
+        withLegend=False,
+        withBarValueLabel=True,
+        yAxisLabel="Page",
+        xAxisLabel="Ad Clicks",
+        barProps={"isAnimationActive": True},
+    )

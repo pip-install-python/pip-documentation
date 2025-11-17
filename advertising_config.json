@@ -1,0 +1,24 @@
+{
+  "campaigns": [
+    {
+      "id": "campaign_001",
+      "name": "POS Shop link",
+      "image": "/assets/advertising/pos_video_thumbnail.jpg",
+      "url": "https://plotly.pro/product/prod_T0wnQRbJevgcXd",
+      "active": true,
+      "start_date": "2025-01-01",
+      "end_date": null,
+      "description": "Point of sale template"
+    },
+    {
+      "id": "campaign_002",
+      "name": "excalidraw notebook",
+      "image": "/assets/advertising/desh-excalidraw-thumbnail-final.jpg",
+      "url": "https://plotly.pro/product/prod_SY2zFSqr12cOL7",
+      "active": true,
+      "start_date": "2025-01-01",
+      "end_date": null,
+      "description": "Photography portfolio showcase"
+    }
+  ]
+}

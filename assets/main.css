@@ -877,3 +877,43 @@ table {
         background: var(--mantine-color-dark-3);
     }
 }
+
+/* ====================================================================
+   ADVERTISEMENT STYLING
+   Styling for advertisement banners in TOC section
+   ==================================================================== */
+
+/* Advertisement paper container */
+.ad-paper {
+    transition: all 0.3s ease;
+}
+
+.ad-paper:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--mantine-shadow-lg) !important;
+}
+
+/* Advertisement image */
+.ad-image {
+    transition: all 0.3s ease;
+}
+
+.ad-image:hover {
+    transform: scale(1.02);
+}
+
+/* Light mode ad container */
+:root[data-mantine-color-scheme="light"] .ad-paper {
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(248, 249, 250, 0.95) 100%);
+    backdrop-filter: blur(10px);
+}
+
+/* Dark mode ad container */
+:root[data-mantine-color-scheme="dark"] .ad-paper {
+    background: linear-gradient(135deg,
+        rgba(37, 38, 43, 0.95) 0%,
+        rgba(26, 27, 30, 0.95) 100%);
+    backdrop-filter: blur(10px);
+}

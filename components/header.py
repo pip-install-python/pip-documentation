@@ -68,6 +68,7 @@ def create_search(data):
         clearable=True,
         w=240,
         size="sm",
+        mb=10,
         nothingFoundMessage="No pages found",
         leftSection=DashIconify(icon="mingcute:search-3-line", width=18),
         data=[
