@@ -804,3 +804,76 @@ img[alt=logo] { width: 100%; }
 :root[data-mantine-color-scheme="dark"] .error-message {
     color: var(--mantine-color-red-4);
 }
+
+/* ====================================================================
+   MARKDOWN TABLE RESPONSIVENESS
+   Enables horizontal scrolling for tables on mobile devices
+   ==================================================================== */
+
+/* Base table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Mobile-specific: Enable horizontal scrolling for wide tables */
+@media (max-width: 768px) {
+    /* Make tables scrollable by displaying as block */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+        white-space: nowrap; /* Prevent cell content from wrapping */
+        max-width: 100%;
+    }
+
+    /* Ensure table body and rows behave correctly in block display mode */
+    table tbody {
+        display: table;
+        width: 100%;
+    }
+
+    /* Prevent cell text from wrapping on small screens */
+    table th,
+    table td {
+        white-space: nowrap;
+        padding: 8px 12px;
+    }
+
+    /* Custom scrollbar styling for better UX */
+    table::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    /* Light mode scrollbar track */
+    table::-webkit-scrollbar-track {
+        background: var(--mantine-color-gray-1);
+        border-radius: 4px;
+    }
+
+    /* Dark mode scrollbar track */
+    :root[data-mantine-color-scheme="dark"] table::-webkit-scrollbar-track {
+        background: var(--mantine-color-dark-6);
+    }
+
+    /* Light mode scrollbar thumb */
+    table::-webkit-scrollbar-thumb {
+        background: var(--mantine-color-gray-4);
+        border-radius: 4px;
+    }
+
+    /* Dark mode scrollbar thumb */
+    :root[data-mantine-color-scheme="dark"] table::-webkit-scrollbar-thumb {
+        background: var(--mantine-color-dark-4);
+    }
+
+    /* Scrollbar thumb hover state - light mode */
+    table::-webkit-scrollbar-thumb:hover {
+        background: var(--mantine-color-gray-5);
+    }
+
+    /* Scrollbar thumb hover state - dark mode */
+    :root[data-mantine-color-scheme="dark"] table::-webkit-scrollbar-thumb:hover {
+        background: var(--mantine-color-dark-3);
+    }
+}

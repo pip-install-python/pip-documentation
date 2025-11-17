@@ -104,43 +104,64 @@ component = dmc.Box([
                 step=10,
                 mb="sm"
             ),
-        ], p="md", shadow="sm", radius="md", withBorder=True)
-    ], span={'md': 5, 'sm': 12}),
+        ], p="md", shadow="sm", radius="md", withBorder=True, style={"width": "100%"})
+    ], span={'base': 12, 'lg': 5}),
 
     dmc.GridCol([
-        DashPlanet(
-            id='menu-planet',
-            centerContent=dmc.Indicator(
-                dmc.Avatar(
-                    size="lg",
-                    radius="xl",
-                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
+        dmc.Box(
+            DashPlanet(
+                id='menu-planet',
+                centerContent=dmc.Indicator(
+                    dmc.Avatar(
+                        size="lg",
+                        radius="xl",
+                        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
+                    ),
+                    inline=True,
+                    offset=7,
+                    position="bottom-end",
+                    color="red",
+                    withBorder=True,
+                    size=16,
                 ),
-                inline=True,
-                offset=7,
-                position="bottom-end",
-                color="red",
-                withBorder=True,
-                size=16,
+                open=True,
+                orbitRadius=80,
+                hideOrbit=True,
+                bounce=True,
+                bounceOnOpen=True,
+                rotation=90,
+                dragablePlanet=True,
+                dragableSatellites=True,
+                satelliteOrientation='DEFAULT',
+                children=generate_satellites(3),
+                mass=4,
+                tension=500,
+                friction=19,
+                apiKey=API_KEY
             ),
-            open=True,
-            orbitRadius=80,
-            hideOrbit=True,
-            bounce=True,
-            bounceOnOpen=True,
-            rotation=90,
-            dragablePlanet=True,
-            dragableSatellites=True,
-            satelliteOrientation='DEFAULT',
-            children=generate_satellites(3),
-            mass=4,
-            tension=500,
-            friction=19,
-            apiKey=API_KEY
+            style={
+                "width": "100%",
+                "maxWidth": "500px",
+                "margin": "0 auto",
+                "display": "flex",
+                "justifyContent": "center",
+                "alignItems": "center",
+                "minHeight": "300px",
+            }
         )
-    ], style=styles['root'], span={'md': 4, 'sm': 12}),
-        dmc.GridCol(span={'md': 3, 'sm': 12})
-        ])
+    ], style={
+        'display': 'flex',
+        'flex': '1',
+        'width': '100%',
+        'justifyContent': 'center',
+        'alignItems': 'center',
+        'flexDirection': 'column',
+        'position': 'relative',
+        'gap': '20px',
+        'padding': '20px',
+        'boxSizing': 'border-box'
+    }, span={'base': 12, 'lg': 7}),
+        ], gutter="md")
 ])
 
 

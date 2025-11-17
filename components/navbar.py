@@ -107,9 +107,14 @@ def create_content(data):
             [
                 # Home link
                 create_nav_link(
-                    "fluent:home-24-regular",
-                    "Home",
+                    "line-md:home-alt-twotone",
+                    "Index",
                     "/"
+                ),
+                create_nav_link(
+                    "streamline-pixel:content-files-favorite-book",
+                    "Docs Boilerplate",
+                    "https://dash-documentation-boilerplate.onrender.com/"
                 ),
 
                 # Documentation Pages Section

@@ -331,7 +331,7 @@ forms_props = dmc.GridCol(
         "position": "relative",
         "overflow": "auto",
     },
-    span={"md": 4, "sm": 12},
+    span={"base": 12, "xl": 4},
 )
 
 
@@ -382,35 +382,46 @@ component = dmc.Box(
                     dmc.Stack(
                         [
                             dmc.Space(h=50),
-                            DashPlanet(
-                                id="demo-planet",
-                                centerContent=dmc.Indicator(
-                                    dmc.Avatar(
-                                        size="lg",
-                                        radius="xl",
-                                        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
+                            dmc.Box(
+                                DashPlanet(
+                                    id="demo-planet",
+                                    centerContent=dmc.Indicator(
+                                        dmc.Avatar(
+                                            size="lg",
+                                            radius="xl",
+                                            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
+                                        ),
+                                        inline=True,
+                                        offset=7,
+                                        position="bottom-end",
+                                        color="red",
+                                        withBorder=True,
+                                        size=16,
                                     ),
-                                    inline=True,
-                                    offset=7,
-                                    position="bottom-end",
-                                    color="red",
-                                    withBorder=True,
-                                    size=16,
+                                    open=True,
+                                    orbitRadius=80,
+                                    hideOrbit=True,
+                                    bounce=True,
+                                    bounceOnOpen=True,
+                                    rotation=0,
+                                    dragablePlanet=True,
+                                    dragableSatellites=True,
+                                    satelliteOrientation="DEFAULT",
+                                    children=generate_satellites(8),
+                                    mass=4,
+                                    tension=500,
+                                    friction=19,
+                                    apiKey="",
                                 ),
-                                open=True,
-                                orbitRadius=80,
-                                hideOrbit=True,
-                                bounce=True,
-                                bounceOnOpen=True,
-                                rotation=0,
-                                dragablePlanet=True,
-                                dragableSatellites=True,
-                                satelliteOrientation="DEFAULT",
-                                children=generate_satellites(8),
-                                mass=4,
-                                tension=500,
-                                friction=19,
-                                apiKey="",
+                                style={
+                                    "width": "100%",
+                                    "maxWidth": "500px",
+                                    "margin": "0 auto",
+                                    "display": "flex",
+                                    "justifyContent": "center",
+                                    "alignItems": "center",
+                                    "minHeight": "300px",
+                                }
                             ),
                             dmc.Space(h=150),
                             html.Div(
@@ -427,8 +438,16 @@ component = dmc.Box(
                         ],
                         mt="100px",
                     ),
-                    span={"md": 4, "sm": 12},
-                    style=styles["gridColumn"],
+                    span={"base": 12, "xl": 4},
+                    style={
+                        "height": "100%",
+                        "display": "flex",
+                        "justifyContent": "center",
+                        "alignItems": "center",
+                        "position": "relative",
+                        "padding": "20px",
+                        "boxSizing": "border-box",
+                    },
                 ),
                 dmc.GridCol(
                     dmc.Card(
@@ -507,15 +526,17 @@ component = dmc.Box(
                         shadow="sm",
                         radius="md",
                         withBorder=True,
+                        style={"width": "100%"}
                     ),
                     style={
-                        "height": "300px",
                         "display": "flex",
                         "justifyContent": "center",
                         "alignItems": "center",
                         "position": "relative",
+                        "padding": "20px",
+                        "boxSizing": "border-box",
                     },
-                    span={"md": 4, "sm": 12},
+                    span={"base": 12, "xl": 4},
                 ),
             ],
             gutter="xl",
