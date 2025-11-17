@@ -132,3 +132,6 @@ dmypy.json
 
 # Node
 node_modules/
+
+# Analytics data files (runtime generated)
+*_analytics.json
