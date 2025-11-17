@@ -33,7 +33,8 @@ app = Dash(
     external_scripts=scripts,
     update_title=None,
     prevent_initial_callbacks=True,
-    index_string=open('templates/index.html').read()  # Add this line
+    index_string=open('templates/index.html').read(),
+    health_endpoint="health"  # Dash 3.3.0: Production health check endpoint
 )
 
 # ============================================================================
@@ -435,35 +436,9 @@ import callbacks.advertising_callbacks  # noqa: F401
 # ============================================================================
 # Advertising Click Tracking API
 # ============================================================================
-
-from lib.advertising import track_click as ad_track_click
-
-@app.server.route("/api/track-ad-click", methods=['POST'])
-def track_ad_click_endpoint():
-    """
-    API endpoint to track advertisement clicks.
-
-    Expected JSON body:
-        - campaign_id: ID of the campaign clicked
-        - page: Page where click occurred
-        - timestamp: ISO timestamp of click
-    """
-    try:
-        data = request.get_json()
-        campaign_id = data.get('campaign_id')
-        page = data.get('page')
-        session_id = request.headers.get('X-Session-ID')
-
-        if campaign_id and page:
-            ad_track_click(campaign_id, page, session_id)
-            return jsonify({"status": "success"}), 200
-        else:
-            return jsonify({"error": "Missing required fields"}), 400
-
-    except Exception as e:
-        print(f"[Advertising API] Error tracking click: {e}")
-        return jsonify({"error": str(e)}), 500
-
+# Note: The /api/track-ad-click endpoint is now defined as a callback with
+# api_endpoint parameter in callbacks/advertising_callbacks.py (Dash 3.3.0)
+# The app.setup_apis() call below will register it automatically.
 # ============================================================================
 
 app.layout = create_appshell(dash.page_registry.values())
@@ -488,6 +463,9 @@ def track_visitor():
 
 # ============================================================================
 
+# Setup API endpoints (Dash 3.3.0)
+# This registers all callbacks with api_endpoint parameter as Flask routes
+app.setup_apis()
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port='8502')

@@ -556,7 +556,8 @@ def create_bot_visits_table(bot_visits):
 # Callback to load analytics data periodically
 @callback(
     Output('analytics-data-store', 'data'),
-    Input('analytics-interval', 'n_intervals')
+    Input('analytics-interval', 'n_intervals'),
+    hidden=True
 )
 def update_analytics_data(n):
     """Load fresh analytics data."""
@@ -566,7 +567,8 @@ def update_analytics_data(n):
 # Callbacks to update stat cards
 @callback(
     Output('total-stat-value', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_total_stat(data):
     if not data:
@@ -576,7 +578,8 @@ def update_total_stat(data):
 
 @callback(
     Output('desktop-stat-value', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_desktop_stat(data):
     if not data:
@@ -586,7 +589,8 @@ def update_desktop_stat(data):
 
 @callback(
     Output('mobile-stat-value', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_mobile_stat(data):
     if not data:
@@ -596,7 +600,8 @@ def update_mobile_stat(data):
 
 @callback(
     Output('tablet-stat-value', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_tablet_stat(data):
     if not data:
@@ -606,7 +611,8 @@ def update_tablet_stat(data):
 
 @callback(
     Output('bot-stat-value', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_bot_stat(data):
     if not data:
@@ -617,7 +623,8 @@ def update_bot_stat(data):
 # Callback to update device chart
 @callback(
     Output('device-chart-container', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_device_chart(data):
     if not data:
@@ -651,7 +658,8 @@ def update_device_chart(data):
 # Callback to update bot types chart
 @callback(
     Output('bot-types-chart-container', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_bot_types_chart(data):
     if not data:
@@ -686,7 +694,8 @@ def update_bot_types_chart(data):
 # Callback to update hourly chart
 @callback(
     Output('hourly-chart-container', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_hourly_chart(data):
     if not data:
@@ -729,7 +738,8 @@ def update_hourly_chart(data):
 # Callback to update top pages chart
 @callback(
     Output('top-pages-chart-container', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_top_pages_chart(data):
     if not data:
@@ -775,7 +785,8 @@ def update_top_pages_chart(data):
 # Callback to update bot visits table
 @callback(
     Output('bot-visits-table-container', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_bot_visits_table(data):
     if not data:
@@ -843,7 +854,8 @@ def get_location_data(visits):
 # Callback to update location map
 @callback(
     Output('location-map-container', 'children'),
-    Input('analytics-data-store', 'data')
+    Input('analytics-data-store', 'data'),
+    hidden=True
 )
 def update_location_map(data):
     if not data:
@@ -947,7 +959,8 @@ def update_location_map(data):
 # Callback to load advertising analytics data periodically
 @callback(
     Output('ad-analytics-data-store', 'data'),
-    Input('analytics-interval', 'n_intervals')
+    Input('analytics-interval', 'n_intervals'),
+    hidden=True
 )
 def update_ad_analytics_data(n):
     """Load fresh advertising analytics data."""
@@ -966,7 +979,8 @@ def update_ad_analytics_data(n):
         Output('ad-ctr-stat-value', 'children'),
         Output('ad-campaigns-stat-value', 'children'),
     ],
-    Input('ad-analytics-data-store', 'data')
+    Input('ad-analytics-data-store', 'data'),
+    hidden=True
 )
 def update_ad_stats(data):
     """Update advertising statistics cards."""
@@ -985,7 +999,8 @@ def update_ad_stats(data):
 # Callback to update campaign performance table
 @callback(
     Output('ad-campaigns-table-container', 'children'),
-    Input('ad-analytics-data-store', 'data')
+    Input('ad-analytics-data-store', 'data'),
+    hidden=True
 )
 def update_ad_campaigns_table(data):
     """Update advertising campaigns performance table."""
@@ -1079,7 +1094,8 @@ def update_ad_campaigns_table(data):
 # Callback to update clicks by page chart
 @callback(
     Output('ad-clicks-by-page-container', 'children'),
-    Input('ad-analytics-data-store', 'data')
+    Input('ad-analytics-data-store', 'data'),
+    hidden=True
 )
 def update_ad_clicks_by_page(data):
     """Update advertising clicks by page chart."""
