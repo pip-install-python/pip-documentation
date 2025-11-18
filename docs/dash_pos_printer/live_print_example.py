@@ -13,6 +13,7 @@ from datetime import datetime
 # Import printer service module but don't instantiate yet
 printer_service = None
 PRINTER_SERVICE_AVAILABLE = False
+PRINTER_IMPORT_ERROR = None
 
 try:
     # Import from support_files
@@ -21,14 +22,33 @@ try:
     from support_files.printer_service import StarPrinterService
     PRINTER_SERVICE_AVAILABLE = True
 except Exception as e:
+    PRINTER_IMPORT_ERROR = str(e)
     print(f"Warning: Printer service module not available: {e}")
     StarPrinterService = None
 
 # Get device ID from environment
+STAR_API_KEY = os.environ.get('STAR_MICRONICS')
 DEVICE_ID = os.environ.get('STAR_DEVICE_ID')
 GROUP_PATH = os.environ.get('STAR_GROUP_PATH', 'pipinstallpython')
 REGION = os.environ.get('STAR_REGION', 'US')
-PRINTER_AVAILABLE = PRINTER_SERVICE_AVAILABLE and DEVICE_ID is not None
+
+# Diagnostic logging on startup
+print("\n" + "="*60)
+print("PRINTER SERVICE ENVIRONMENT CHECK")
+print("="*60)
+print(f"STAR_MICRONICS API Key: {'✅ SET' if STAR_API_KEY else '❌ NOT SET'}")
+print(f"STAR_DEVICE_ID: {'✅ ' + DEVICE_ID if DEVICE_ID else '❌ NOT SET'}")
+print(f"STAR_GROUP_PATH: {GROUP_PATH}")
+print(f"STAR_REGION: {REGION}")
+print(f"Service Import: {'✅ SUCCESS' if PRINTER_SERVICE_AVAILABLE else '❌ FAILED: ' + str(PRINTER_IMPORT_ERROR)}")
+print("="*60 + "\n")
+
+PRINTER_AVAILABLE = PRINTER_SERVICE_AVAILABLE and DEVICE_ID is not None and STAR_API_KEY is not None
+MISSING_ENV_VARS = []
+if not STAR_API_KEY:
+    MISSING_ENV_VARS.append('STAR_MICRONICS')
+if not DEVICE_ID:
+    MISSING_ENV_VARS.append('STAR_DEVICE_ID')
 
 
 def get_printer_service():
@@ -70,27 +90,84 @@ component = dmc.Container([
         )
     ], gap="xs", mb="lg"),
 
-    # Status indicator
+    # Status indicator with detailed environment variable diagnostics
     dmc.Card([
-        dmc.Group([
+        dmc.Stack([
+            # Overall status
+            dmc.Group([
+                DashIconify(
+                    icon="tabler:circle-check" if PRINTER_AVAILABLE else "tabler:alert-circle",
+                    width=20,
+                    color="#16a34a" if PRINTER_AVAILABLE else "#dc2626"
+                ),
+                dmc.Text(
+                    "Printer Connected" if PRINTER_AVAILABLE else "Printer Not Available",
+                    fw=600,
+                    c="green" if PRINTER_AVAILABLE else "red"
+                )
+            ]),
+
+            dmc.Divider(variant="dashed"),
+
+            # Environment variable status
             dmc.Stack([
+                dmc.Text("Environment Variables", size="xs", fw=600, c="dimmed", tt="uppercase"),
                 dmc.Group([
                     DashIconify(
-                        icon="tabler:circle-check" if PRINTER_AVAILABLE else "tabler:alert-circle",
-                        width=20,
-                        color="#16a34a" if PRINTER_AVAILABLE else "#dc2626"
+                        icon="tabler:check" if STAR_API_KEY else "tabler:x",
+                        width=14,
+                        color="#16a34a" if STAR_API_KEY else "#dc2626"
                     ),
                     dmc.Text(
-                        "Printer Connected" if PRINTER_AVAILABLE else "Printer Not Available",
-                        fw=600,
-                        c="green" if PRINTER_AVAILABLE else "red"
+                        f"STAR_MICRONICS: {'Set (***{STAR_API_KEY[-4:]})' if STAR_API_KEY else '❌ NOT SET'}",
+                        size="sm",
+                        c="dimmed" if STAR_API_KEY else "red"
                     )
-                ]),
-                dmc.Text(f"Device ID: {DEVICE_ID or 'Not set'}", size="sm", c="dimmed"),
-                dmc.Text(f"Group Path: {GROUP_PATH or 'Not set'}", size="sm", c="dimmed"),
-                dmc.Text(f"Region: {REGION or 'Not set'}", size="sm", c="dimmed"),
+                ], gap="xs"),
+                dmc.Group([
+                    DashIconify(
+                        icon="tabler:check" if DEVICE_ID else "tabler:x",
+                        width=14,
+                        color="#16a34a" if DEVICE_ID else "#dc2626"
+                    ),
+                    dmc.Text(
+                        f"STAR_DEVICE_ID: {DEVICE_ID if DEVICE_ID else '❌ NOT SET'}",
+                        size="sm",
+                        c="dimmed" if DEVICE_ID else "red"
+                    )
+                ], gap="xs"),
+                dmc.Group([
+                    DashIconify(icon="tabler:check", width=14, color="#16a34a"),
+                    dmc.Text(f"STAR_GROUP_PATH: {GROUP_PATH}", size="sm", c="dimmed")
+                ], gap="xs"),
+                dmc.Group([
+                    DashIconify(icon="tabler:check", width=14, color="#16a34a"),
+                    dmc.Text(f"STAR_REGION: {REGION}", size="sm", c="dimmed")
+                ], gap="xs"),
             ], gap="xs"),
-        ])
+
+            # Missing variables alert
+            dmc.Alert(
+                [
+                    dmc.Stack([
+                        dmc.Text("Missing Environment Variables", size="sm", fw=600),
+                        dmc.Text(
+                            f"Please configure: {', '.join(MISSING_ENV_VARS)}",
+                            size="xs"
+                        ),
+                        dmc.Text(
+                            "On Render: Dashboard → Environment → Add Variable",
+                            size="xs",
+                            c="dimmed"
+                        )
+                    ], gap="xs")
+                ],
+                title="Configuration Required",
+                icon=DashIconify(icon="tabler:alert-triangle", width=20),
+                color="red",
+                variant="light"
+            ) if MISSING_ENV_VARS else None,
+        ], gap="sm")
     ], shadow="sm", padding="md", radius="md", withBorder=True, mb="lg"),
 
     # Message composer
