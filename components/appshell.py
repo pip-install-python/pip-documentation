@@ -176,7 +176,7 @@ def create_appshell(data):
         children=[
             dcc.Location(id="url", refresh="callback-nav"),
             dcc.Store(id="color-scheme-storage", storage_type="local"),
-            dmc.NotificationContainer(),
+            dmc.NotificationContainer(id="notification-container", position="top-right"),
             dmc.AppShell(
                 [
                     create_header(data),

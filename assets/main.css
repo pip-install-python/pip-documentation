@@ -917,3 +917,515 @@ table {
         rgba(26, 27, 30, 0.95) 100%);
     backdrop-filter: blur(10px);
 }
+
+/* ============================================================================
+   APPLE-STYLE LIQUID GLASS SCROLLBARS
+   Modern scrollbars with glass morphism for all scrollable elements
+   ============================================================================ */
+
+/* General Webkit Scrollbars (for all scrollable elements) */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track {
+    /* Glass morphism background */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 2px;
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    /* Gradient background */
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    /* Glass effect */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.18) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.4),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0.22) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+    transform: scale(0.98);
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dark Mode Webkit Scrollbars */
+:root[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.05),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.08) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.2),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.18) 50%,
+        rgba(255, 255, 255, 0.12) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.25),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.25),
+        0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0.15) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+:root[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================================================
+   DMC SCROLLAREA COMPONENT - APPLE-STYLE GLASS DESIGN
+   Enhanced scrollbars specifically for Mantine ScrollArea components
+   ============================================================================ */
+
+/* ScrollArea Container - Enhanced spacing for larger scrollbars */
+.mantine-ScrollArea-root {
+    --scrollarea-scrollbar-size: 14px;
+}
+
+/* Scrollbar Track - Glass background */
+.mantine-ScrollArea-scrollbar {
+    /* Glass morphism background */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+
+    /* Rounded corners */
+    border-radius: 10px;
+
+    /* Subtle border */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    /* Padding for thumb */
+    padding: 2px;
+
+    /* Size */
+    width: var(--scrollarea-scrollbar-size) !important;
+
+    /* Smooth transitions */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Subtle shadow */
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Vertical scrollbar positioning */
+.mantine-ScrollArea-scrollbar[data-orientation="vertical"] {
+    width: var(--scrollarea-scrollbar-size) !important;
+    right: 2px;
+    top: 2px;
+    bottom: 2px;
+}
+
+/* Horizontal scrollbar positioning */
+.mantine-ScrollArea-scrollbar[data-orientation="horizontal"] {
+    height: var(--scrollarea-scrollbar-size) !important;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+}
+
+/* Scrollbar Thumb - Apple-style design */
+.mantine-ScrollArea-thumb {
+    /* Gradient background */
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+
+    /* Glass effect */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+    /* Rounded */
+    border-radius: 8px !important;
+
+    /* Subtle border */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    /* Inner highlight */
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+
+    /* Smooth transitions */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Minimum size */
+    min-height: 40px !important;
+    min-width: 40px !important;
+}
+
+/* Thumb hover state */
+.mantine-ScrollArea-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.18) 100%
+    );
+
+    border-color: rgba(255, 255, 255, 0.3);
+
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.4),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+
+    transform: scale(1.05);
+}
+
+/* Thumb active/dragging state */
+.mantine-ScrollArea-thumb:active {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0.22) 100%
+    );
+
+    border-color: rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.25);
+
+    transform: scale(0.98);
+}
+
+/* Scrollbar Corner (where horizontal and vertical meet) */
+.mantine-ScrollArea-corner {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================================
+   DARK MODE SCROLLAREA ADJUSTMENTS
+   ============================================================================ */
+
+[data-mantine-color-scheme="dark"] .mantine-ScrollArea-scrollbar {
+    background: rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.05),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-ScrollArea-thumb {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.08) 100%
+    );
+
+    border-color: rgba(255, 255, 255, 0.15);
+
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.2),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-ScrollArea-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.18) 50%,
+        rgba(255, 255, 255, 0.12) 100%
+    );
+
+    border-color: rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.25),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.25),
+        0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-ScrollArea-thumb:active {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0.22) 50%,
+        rgba(255, 255, 255, 0.15) 100%
+    );
+
+    border-color: rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+[data-mantine-color-scheme="dark"] .mantine-ScrollArea-corner {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================================================
+   ENHANCED SCROLLBAR VARIANTS
+   Add className to ScrollArea component to use these variants
+   ============================================================================ */
+
+/* Accent variant - Blue tinted for primary areas
+   Usage: dmc.ScrollArea(className="scrollarea-accent", ...) */
+.scrollarea-accent .mantine-ScrollArea-thumb {
+    background: linear-gradient(
+        135deg,
+        rgba(34, 139, 230, 0.35) 0%,
+        rgba(34, 139, 230, 0.25) 50%,
+        rgba(34, 139, 230, 0.18) 100%
+    );
+    border-color: rgba(34, 139, 230, 0.3);
+}
+
+.scrollarea-accent .mantine-ScrollArea-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(34, 139, 230, 0.45) 0%,
+        rgba(34, 139, 230, 0.35) 50%,
+        rgba(34, 139, 230, 0.25) 100%
+    );
+    border-color: rgba(34, 139, 230, 0.4);
+}
+
+/* Minimal variant - Ultra-subtle for clean interfaces
+   Usage: dmc.ScrollArea(className="scrollarea-minimal", ...) */
+.scrollarea-minimal .mantine-ScrollArea-scrollbar {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+}
+
+.scrollarea-minimal .mantine-ScrollArea-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border: none;
+    box-shadow: none;
+}
+
+.scrollarea-minimal .mantine-ScrollArea-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+}
+
+[data-mantine-color-scheme="dark"] .scrollarea-minimal .mantine-ScrollArea-thumb {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+[data-mantine-color-scheme="dark"] .scrollarea-minimal .mantine-ScrollArea-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Vibrant variant - More visible, colored scrollbars
+   Usage: dmc.ScrollArea(className="scrollarea-vibrant", ...) */
+.scrollarea-vibrant .mantine-ScrollArea-thumb {
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.4) 0%,
+        rgba(139, 92, 246, 0.3) 50%,
+        rgba(167, 139, 250, 0.2) 100%
+    );
+    border-color: rgba(124, 58, 237, 0.35);
+}
+
+.scrollarea-vibrant .mantine-ScrollArea-thumb:hover {
+    background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.5) 0%,
+        rgba(139, 92, 246, 0.4) 50%,
+        rgba(167, 139, 250, 0.3) 100%
+    );
+    border-color: rgba(124, 58, 237, 0.45);
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+/* Slightly smaller on mobile for more screen space */
+@media (max-width: 48em) {
+    .mantine-ScrollArea-root {
+        --scrollarea-scrollbar-size: 12px;
+    }
+
+    .mantine-ScrollArea-thumb {
+        min-height: 30px !important;
+        min-width: 30px !important;
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* ============================================================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================================================ */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-width: 2px;
+        border-color: rgba(0, 0, 0, 0.4);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-width: 2px;
+        border-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .mantine-ScrollArea-scrollbar {
+        background: rgba(0, 0, 0, 0.2);
+        border-width: 2px;
+        border-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .mantine-ScrollArea-thumb {
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-width: 2px;
+        border-color: rgba(0, 0, 0, 0.7);
+    }
+
+    [data-mantine-color-scheme="dark"] ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    [data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5) !important;
+        border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    [data-mantine-color-scheme="dark"] .mantine-ScrollArea-scrollbar {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    [data-mantine-color-scheme="dark"] .mantine-ScrollArea-thumb {
+        background: rgba(255, 255, 255, 0.5) !important;
+        border-color: rgba(255, 255, 255, 0.7);
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    ::-webkit-scrollbar-thumb {
+        transition: none !important;
+    }
+
+    .mantine-ScrollArea-scrollbar,
+    .mantine-ScrollArea-thumb {
+        transition: none !important;
+    }
+}
+
+/* ============================================================================
+   FOCUS STATES FOR KEYBOARD NAVIGATION
+   ============================================================================ */
+
+.mantine-ScrollArea-viewport:focus-within .mantine-ScrollArea-scrollbar {
+    background: rgba(34, 139, 230, 0.08);
+    border-color: rgba(34, 139, 230, 0.15);
+}
+
+.mantine-ScrollArea-viewport:focus-within .mantine-ScrollArea-thumb {
+    box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+        0 0 0 2px rgba(34, 139, 230, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================================
+   END APPLE-STYLE GLASS SCROLLBAR DESIGN
+   ============================================================================ */

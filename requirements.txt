@@ -29,9 +29,11 @@ markdown2dash==0.1.2
 pandas==2.3.3
 plotly==6.4.0
 pydantic==2.12.4
+Pillow
 
 # HTTP & APIs
 requests==2.32.5
+qrcode
 
 # AI/LLM Integration
 dash-improve-my-llms==0.3.0
