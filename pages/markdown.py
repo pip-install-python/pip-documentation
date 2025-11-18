@@ -414,10 +414,11 @@ def create_dock_layout(content_components, toc_component, page_name, page_path):
         ),
         hiddenFrom="sm",  # Hide on screens >= 768px (sm breakpoint)
         style={
-            'height': 'calc(100vh - 200px)',
+            'height': 'calc(100vh - 140px)',
             'width': '100%',
             'position': 'relative',
-            'overflow': 'hidden'
+            'overflow': 'hidden',
+            'marginTop': '10px'
         }
     )
 

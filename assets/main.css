@@ -536,6 +536,21 @@ img[alt=logo] { width: 100%; }
     transition-property: padding;
 }
 
+/* Mobile-specific: Remove padding from AppShellMain to make page_container full width */
+@media (max-width: 768px) {
+    .m_8983817 {
+        padding-inline-start: var(--app-shell-navbar-offset, 0rem) !important;
+        padding-inline-end: 0 !important;
+        padding-top: var(--app-shell-header-offset, 0rem) !important;
+        padding-bottom: var(--app-shell-footer-offset, 0rem) !important;
+    }
+
+    /* Also remove default AppShell padding on mobile */
+    .mantine-AppShellMain-main {
+        padding: 0 !important;
+    }
+}
+
 /* FlexLayout Popup Menu - Light/Dark Mode */
 :root[data-mantine-color-scheme="light"] .flexlayout__popup_menu_container {
     background-color: #dedede;
