@@ -18,7 +18,7 @@ A comprehensive cloud-based receipt printing system for Dash applications, enabl
 .. exec::docs.dash_pos_printer.banner
     :code: false
 
-## Overview
+### Overview
 
 The Star Micronics POS Printer integration connects your Dash application to physical receipt printers via the **StarIO.Online** cloud service. This enables:
 
@@ -29,7 +29,7 @@ The Star Micronics POS Printer integration connects your Dash application to phy
 - **Multiple Print Formats** - Text markup, images, QR codes, and barcodes
 - **Queue Management** - Monitor and clear pending print jobs
 
-### Key Features
+#### Key Features
 
 - ✅ **Zero Infrastructure** - No local print server required, fully cloud-based
 - ✅ **Production Ready** - Used in live POS systems with Stripe integration
@@ -41,9 +41,9 @@ The Star Micronics POS Printer integration connects your Dash application to phy
 
 ---
 
-## Supported Hardware
+### Supported Hardware
 
-### Compatible Printers
+#### Compatible Printers
 
 **mC-Print Series:**
 - mC-Print2 (firmware 1.2+)
@@ -54,22 +54,22 @@ The Star Micronics POS Printer integration connects your Dash application to phy
 
 All printers must support the **CloudPRNT** protocol for cloud connectivity.
 
-### Connection Modes
+#### Connection Modes
 
 - **HTTP Polling** - Compatible with all firmware versions (3-5 second intervals)
 - **MQTT** - Real-time push notifications (requires newer firmware)
 
 ---
 
-## Installation
+### Installation
 
-### Prerequisites
+#### Prerequisites
 
 ```bash
 pip install requests python-dotenv Pillow qrcode[pil]
 ```
 
-### Required Dependencies
+#### Required Dependencies
 
 ```python
 dash==3.3.0
@@ -80,7 +80,7 @@ Pillow>=10.0.0
 qrcode[pil]>=7.4.2
 ```
 
-### GitHub Repository
+#### GitHub Repository
 
 The complete integration includes two core files:
 
@@ -89,9 +89,9 @@ The complete integration includes two core files:
 
 ---
 
-## Quick Start
+### Quick Start
 
-### 1. StarIO.Online Account Setup
+#### 1. StarIO.Online Account Setup
 
 **Register for Account:**
 ```bash
@@ -122,7 +122,7 @@ EU: https://eu-api.stario.online
    - ✅ ModifyDevice
 3. Save API key securely (shown only once)
 
-### 2. Printer Configuration
+#### 2. Printer Configuration
 
 **Get CloudPRNT URL:**
 ```
@@ -138,7 +138,7 @@ Example: https://api.stario.online/v1/a/yourcompany/cloudprnt
 5. Set polling interval: 3-5 seconds
 6. Save and restart printer
 
-### 3. Environment Variables
+#### 3. Environment Variables
 
 Create `.env` file in project root:
 
@@ -151,7 +151,20 @@ STAR_DEVICE_ID=ABC123DEF456  # Optional: default device
 
 ---
 
-## Device Status Example
+### Congifugration Walkthrough
+
+Step-by-step setup guide with visual feedback:
+
+.. exec::docs.dash_pos_printer.setup_guide_example
+    :code: false
+
+.. sourcetabs::docs/dash_pos_printer/setup_guide_example.py
+    :defaultExpanded: false
+    :withExpandedButton: true
+
+---
+
+### Device Status Example
 
 Monitor printer health with real-time status cards:
 
@@ -171,7 +184,7 @@ This example demonstrates:
 
 ---
 
-## Print Receipt Example
+### Print Receipt Example
 
 Send formatted receipts to your printer:
 
@@ -191,38 +204,11 @@ Features:
 
 ---
 
-## Live Printer Test
-
-Send custom messages directly to your actual Star Micronics printer:
-
-.. exec::docs.dash_pos_printer.live_print_example
-    :code: false
-
-.. sourcetabs::docs/dash_pos_printer/live_print_example.py
-    :defaultExpanded: false
-    :withExpandedButton: true
-
-This example connects to your real printer using the Star Micronics CloudPRNT API. Features:
-- **Real API Connection** - Uses environment variables to connect to actual printer
-- **Custom Message Composer** - Write any message with live preview
-- **Template Library** - Pre-built templates for quick printing
-- **Live Formatting** - Automatic date/time injection
-- **Error Handling** - Comprehensive error messages and diagnostics
-- **Connection Status** - Shows printer availability and configuration
-
-**Environment Variables Required:**
-- `STAR_MICRONICS` - Your Star Micronics API key
-- `STAR_GROUP_PATH` - Your device group path
-- `STAR_DEVICE_ID` - Target printer device ID
-- `STAR_REGION` - API region (US or EU)
-
----
-
-## Star Document Markup
+### Star Document Markup
 
 The system uses Star Document Markup for formatting receipts:
 
-### Text Formatting
+#### Text Formatting
 
 ```python
 # Alignment
@@ -242,7 +228,7 @@ The system uses Star Document Markup for formatting receipts:
 "[cut]"
 ```
 
-### Example Receipt
+#### Example Receipt
 
 ```python
 receipt = """[align: center]
@@ -275,7 +261,7 @@ Visit us again soon!
 
 ---
 
-## Printer Management Dashboard
+### Printer Management Dashboard
 
 Full-featured admin dashboard for printer control:
 
@@ -295,9 +281,9 @@ Dashboard Features:
 
 ---
 
-## StarPrinterService API
+### StarPrinterService API
 
-### Initialization
+#### Initialization
 
 ```python
 from printer_service import StarPrinterService
@@ -321,7 +307,7 @@ for device in devices:
 status = printer.get_device_status('ABC123DEF456')
 ```
 
-### Print Operations
+#### Print Operations
 
 ```python
 # Basic print
@@ -354,7 +340,7 @@ else:
     print(f"❌ Error: {result.get('error')}")
 ```
 
-### Queue Management
+#### Queue Management
 
 ```python
 # Clear all pending jobs
@@ -364,7 +350,7 @@ if success:
     print("✅ Queue cleared successfully")
 ```
 
-### Generate Receipt from Order
+#### Generate Receipt from Order
 
 ```python
 order_data = {
@@ -388,20 +374,7 @@ printer.print_receipt(receipt_markup, job_name=f"Order_{order_data['order_number
 
 ---
 
-## Configuration Example
-
-Step-by-step setup guide with visual feedback:
-
-.. exec::docs.dash_pos_printer.setup_guide_example
-    :code: false
-
-.. sourcetabs::docs/dash_pos_printer/setup_guide_example.py
-    :defaultExpanded: false
-    :withExpandedButton: true
-
----
-
-## Automatic Order Printing
+### Automatic Order Printing
 
 Integrate with your checkout process to automatically print receipts:
 
@@ -447,9 +420,9 @@ def on_checkout_success(session_id):
 
 ---
 
-## Troubleshooting
+### Troubleshooting
 
-### Printer Shows Offline
+#### Printer Shows Offline
 
 **Symptoms:**
 - Device appears offline in dashboard
@@ -470,7 +443,7 @@ ping [PRINTER_IP]
 # Power cycle and wait 30 seconds
 ```
 
-### Jobs Stuck in Queue
+#### Jobs Stuck in Queue
 
 **Symptoms:**
 - QueuedJobs count > 0
@@ -495,7 +468,7 @@ else:
 printer.clear_queue(device_id)
 ```
 
-### Authentication Errors
+#### Authentication Errors
 
 **Symptoms:**
 - "API key not found" error
@@ -519,9 +492,9 @@ python printer_service.py
 
 ---
 
-## Component Properties
+### Component Properties
 
-### StarPrinterService Class
+#### StarPrinterService Class
 
 | Property | Type | Default | Description |
 |:---------|:-----|:--------|:------------|
@@ -530,7 +503,7 @@ python printer_service.py
 | `device_id` | string | env: STAR_DEVICE_ID | Optional default device identifier |
 | `base_url` | string | https://api.stario.online/v1 | API base URL (US region) |
 
-### Method: print_receipt()
+#### Method: print_receipt()
 
 | Parameter | Type | Default | Description |
 |:----------|:-----|:--------|:------------|
@@ -541,7 +514,7 @@ python printer_service.py
 | `startbuzzer` | integer | 0 | Number of beeps before printing (0-3) |
 | `endbuzzer` | integer | 0 | Number of beeps after printing (0-3) |
 
-### Device Status Object
+#### Device Status Object
 
 | Property | Type | Description |
 |:---------|:-----|:------------|
@@ -560,9 +533,9 @@ python printer_service.py
 
 ---
 
-## Best Practices
+### Best Practices
 
-### 1. Error Handling
+#### 1. Error Handling
 
 Always wrap printer calls in try-except blocks:
 
@@ -586,7 +559,7 @@ def safe_print(content, device_id):
         return False
 ```
 
-### 2. Queue Monitoring
+#### 2. Queue Monitoring
 
 Monitor print queues and alert on issues:
 
@@ -608,7 +581,7 @@ def check_queue_health():
             printer.clear_queue(device['AccessIdentifier'])
 ```
 
-### 3. Receipt Design
+#### 3. Receipt Design
 
 Design for thermal printer constraints:
 
@@ -633,7 +606,7 @@ Thank you!
 # or 48 chars for 80mm paper
 ```
 
-### 4. Performance Optimization
+#### 4. Performance Optimization
 
 Cache device status to reduce API calls:
 
@@ -657,18 +630,45 @@ class CachedPrinterService:
 
 ---
 
-## Resources
+### Live Printer Test
 
-### Official Documentation
+Send custom messages directly to your actual Star Micronics printer:
+
+.. exec::docs.dash_pos_printer.live_print_example
+    :code: false
+
+.. sourcetabs::docs/dash_pos_printer/live_print_example.py
+    :defaultExpanded: false
+    :withExpandedButton: true
+
+This example connects to your real printer using the Star Micronics CloudPRNT API. Features:
+- **Real API Connection** - Uses environment variables to connect to actual printer
+- **Custom Message Composer** - Write any message with live preview
+- **Template Library** - Pre-built templates for quick printing
+- **Live Formatting** - Automatic date/time injection
+- **Error Handling** - Comprehensive error messages and diagnostics
+- **Connection Status** - Shows printer availability and configuration
+
+**Environment Variables Required:**
+- `STAR_MICRONICS` - Your Star Micronics API key
+- `STAR_GROUP_PATH` - Your device group path
+- `STAR_DEVICE_ID` - Target printer device ID
+- `STAR_REGION` - API region (US or EU)
+
+---
+
+### Resources
+
+#### Official Documentation
 - [Star Micronics Docs](https://docs.star-m.com)
 - [StarIO.Online Dashboard](https://api.stario.online) (US) / [EU](https://eu-api.stario.online)
 - [CloudPRNT Specification](https://docs.star-m.com) - Available in dashboard Help section
 
-### Printer Manuals
+#### Printer Manuals
 - [mC-Print3 Manual](https://star-m.jp/products/s_print/mcprint31_oml/manual_en.html)
 - [TSP100IV Manual](https://star-m.jp/products/s_print/tsp100iv_oml/manual_en.html)
 
-### Support
+#### Support
 - [Plotly Community Forum](https://community.plotly.com)
 - [GitHub Issues](https://github.com/pip-install-python)
 

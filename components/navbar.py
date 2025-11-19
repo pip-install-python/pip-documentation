@@ -38,7 +38,7 @@ def create_nav_link(icon, text, href, external=False):
 
 
 def create_nav_section(title, links):
-    """Create a navigation section with a title and links"""
+    """Create a navigation section with a title and links (used for mobile)"""
     return dmc.Stack(
         [
             dmc.Divider(
@@ -65,9 +65,36 @@ def create_nav_section(title, links):
     )
 
 
-def create_content(data):
-    """Create navbar content with organized sections"""
+def create_nav_section_accordion(title, links):
+    """Create an accordion navigation section (used for desktop/tablet)"""
+    return dmc.AccordionItem(
+        value=title.lower(),
+        children=[
+            dmc.AccordionControl(
+                dmc.Group(
+                    [
+                        DashIconify(
+                            icon=category_data[title]["icon"],
+                            height=20,
+                        ),
+                        dmc.Text(
+                            title,
+                            size="sm",
+                            fw=500,
+                        ),
+                    ],
+                    gap="sm",
+                )
+            ),
+            dmc.AccordionPanel(
+                dmc.Stack(links, gap="xs", pt="xs")
+            ),
+        ],
+    )
 
+
+def get_page_links(data):
+    """Extract and order page links from data"""
     # Define the desired order for documentation pages
     page_order = [
         "Getting Started",
@@ -99,6 +126,79 @@ def create_content(data):
         if name not in page_order:
             page_links.append(link)
 
+    return page_links
+
+
+def get_analytics_links():
+    """Get analytics section links"""
+    return [
+        create_nav_link(
+            "fluent:money-24-regular",
+            "Api Cost",
+            "/analytics"
+        ),
+        create_nav_link(
+            "fluent:data-bar-vertical-24-regular",
+            "Traffic",
+            "/analytics/traffic"
+        ),
+    ]
+
+
+def create_content_desktop(data):
+    """Create desktop navbar content with accordion sections"""
+    page_links = get_page_links(data)
+    analytics_links = get_analytics_links()
+
+    return dmc.ScrollArea(
+        offsetScrollbars=True,
+        type="scroll",
+        style={"height": "100%"},
+        children=dmc.Stack(
+            [
+                # Home link
+                create_nav_link(
+                    "line-md:home-alt-twotone",
+                    "Index",
+                    "/"
+                ),
+                create_nav_link(
+                    "streamline-pixel:content-files-favorite-book",
+                    "Docs Boilerplate",
+                    "https://dash-documentation-boilerplate.onrender.com/"
+                ),
+
+                # Accordion for sections
+                dmc.Accordion(
+                    value="components",  # Components section open by default
+                    chevronPosition="left",
+                    variant="separated",
+                    children=[
+                        # Documentation Pages Section
+                        create_nav_section_accordion(
+                            "Components",
+                            page_links
+                        ),
+
+                        # Analytics Section
+                        create_nav_section_accordion(
+                            "Analytics",
+                            analytics_links
+                        ),
+                    ],
+                ),
+            ],
+            gap="xs",
+            p="md",
+        ),
+    )
+
+
+def create_content_mobile(data):
+    """Create mobile navbar content with simple sections (no accordion)"""
+    page_links = get_page_links(data)
+    analytics_links = get_analytics_links()
+
     return dmc.ScrollArea(
         offsetScrollbars=True,
         type="scroll",
@@ -126,44 +226,8 @@ def create_content(data):
                 # Analytics Section
                 create_nav_section(
                     "Analytics",
-                    [
-                        create_nav_link(
-                            "fluent:money-24-regular",
-                            "Api Cost",
-                            "/analytics"
-                        ),
-                        create_nav_link(
-                            "fluent:data-bar-vertical-24-regular",
-                            "Traffic",
-                            "/analytics/traffic"
-                        ),
-                    ]
+                    analytics_links
                 ),
-
-                # External Resources Section
-                # create_nav_section(
-                #     "Resources",
-                #     [
-                #         create_nav_link(
-                #             "fluent-mdl2:forum",
-                #             "Dash Community",
-                #             "https://community.plotly.com/",
-                #             external=True
-                #         ),
-                #         create_nav_link(
-                #             "ic:baseline-design-services",
-                #             "DMC",
-                #             "https://www.dash-mantine-components.com/",
-                #             external=True
-                #         ),
-                #         create_nav_link(
-                #             "solar:box-bold-duotone",
-                #             "Pip Components",
-                #             "https://pip-install-python.com/",
-                #             external=True
-                #         ),
-                #     ]
-                # ),
             ],
             gap="xs",
             p="md",
@@ -172,15 +236,15 @@ def create_content(data):
 
 
 def create_navbar(data):
-    """Create the main application navbar"""
+    """Create the main application navbar (desktop/tablet with accordion)"""
     return dmc.AppShellNavbar(
-        children=create_content(data),
+        children=create_content_desktop(data),
         style={"borderRight": "1px solid #03c7e5"}
     )
 
 
 def create_navbar_drawer(data):
-    """Create mobile drawer navigation"""
+    """Create mobile drawer navigation (without accordion)"""
     return dmc.Drawer(
         id="components-navbar-drawer",
         overlayProps={"opacity": 0.55, "blur": 3},
@@ -189,7 +253,7 @@ def create_navbar_drawer(data):
         radius="md",
         withCloseButton=False,
         size="280px",
-        children=create_content(data),
+        children=create_content_mobile(data),
         trapFocus=False,
         position="left",
     )

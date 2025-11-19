@@ -3,20 +3,30 @@
 
 > **A modern, responsive documentation system for the custom Dash components, software and research that I design and maintain.**
 
-Welcome to my notebook, I'm glad you're here! This documentation site was built to leverage llms and ai with specific endpoints for each page and an integrated Claude Haiku chatbot to help you navigate and understand the contents of the site.
+Welcome to my notebook,
 ---
 
-These are some of the available urls for ai's to best read and work with the contents of this site:
+This documentation was designed with ai in mind, these are some of the available endpoints for ai's to best read and work with the contents of this site:
 
 [/llms.txt](/llms.txt), [/architecture.txt](/architecture.txt), [/robots.txt](/robots.txt) and [/sitemap.xml](/sitemap.xml)
+
+Outside of that their is a chat tab within documentation that can be used to ask direct questions about the documentation. Which can help you with any questions you may have.
 
 Link to my GitHub profile: [Pip-Install-Python](https://github.com/pip-install-python)
 - ![GitHub](https://img.shields.io/github/followers/pip-install-python?style=social)
 
 Link to my YouTube channel: [@Pip Install Python](https://www.youtube.com/channel/UC-pBvv8mzLpj0k-RIbc2Nog?sub_confirmation=1)
 - ![YouTube](https://img.shields.io/youtube/channel/subscribers/UC-pBvv8mzLpj0k-RIbc2Nog?style=social)
+---
 
-___
+## Dependencies
+
+```bash
+pip install dash>=3.0
+pip install dash-mantine-components>=2.4
+```
+
+---
 ## Components:
 
 |                                            **Currently Maintained**                                             | | |                                                        **Archived**                                                         | | |
@@ -34,10 +44,16 @@ ___
 |  [![Downloads](https://static.pepy.tech/badge/dash-model-viewer)](https://pepy.tech/project/dash-model-viwer)   | Dash Model Viewer | A 3D Model Viewer for Dash |                                                                                                                             | | |
 |    [![Downloads](https://static.pepy.tech/badge/dash-excalidraw)](https://pepy.tech/project/dash-excalidraw)    | Dash Excalidraw | A Freeform Drawing and Notebook Component for Dash |                                                                                                                             | | |
 
-___
+---
 
-## Notes
-____
+## Built With
+
+This documentation system is powered by:
+
+- **[Dash Documentation Boilerplate](https://github.com/pip-install-python/Dash-Documentation-Boilerplate)** - A modern, responsive documentation framework for Dash markdown rendered applications
+- **[dash-improve-my-llms](https://github.com/pip-install-python/dash-improve-my-llms)** - AI-powered documentation enhancement
+
+---
 
 ## License
 
@@ -45,4 +61,4 @@ MIT License - see [LICENSE](https://github.com/pip-install-python/Dash-Documenta
 
 ---
 
-**Ready to start?** Check out the example documentation pages to see what you can build!
+**Ready to start?** Check out the documentation pages, build from the limited working examples chat or prompt the docs with the ai to see what you can build!
