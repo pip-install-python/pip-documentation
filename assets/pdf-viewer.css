@@ -1,0 +1,230 @@
+/* PDF Viewer Styles - Professional UI/UX */
+/* Following Dash Mantine Components design system */
+
+/* Main PDF Container - Center and optimize width */
+#pdf-viewer-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* PDF Canvas Container - Remove excess whitespace */
+#pdf-viewer canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+}
+
+/* PDF Controls Container - Professional styling */
+#pdf-viewer > div:first-child,
+#pdf-viewer-wrapper > div:first-child > div:first-child {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border-radius: 8px;
+    order: 2;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Page Indicator - Mantine-style text */
+#pdf-viewer p,
+#pdf-viewer-wrapper p {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    min-width: 100px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+/* Light mode page indicator */
+:root[data-mantine-color-scheme="light"] #pdf-viewer p,
+:root[data-mantine-color-scheme="light"] #pdf-viewer-wrapper p {
+    color: #495057;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* Dark mode page indicator */
+:root[data-mantine-color-scheme="dark"] #pdf-viewer p,
+:root[data-mantine-color-scheme="dark"] #pdf-viewer-wrapper p {
+    color: #c1c2c5;
+    background-color: #2c2e33;
+    border: 1px solid #373a40;
+}
+
+/* Navigation Buttons - Mantine Button style */
+#pdf-viewer button,
+#pdf-viewer-wrapper button {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    height: 36px;
+    line-height: 1;
+}
+
+/* Light mode buttons */
+:root[data-mantine-color-scheme="light"] #pdf-viewer button,
+:root[data-mantine-color-scheme="light"] #pdf-viewer-wrapper button {
+    background-color: #228be6;
+    color: white;
+    border-color: #228be6;
+}
+
+:root[data-mantine-color-scheme="light"] #pdf-viewer button:hover:not(:disabled),
+:root[data-mantine-color-scheme="light"] #pdf-viewer-wrapper button:hover:not(:disabled) {
+    background-color: #1c7ed6;
+    border-color: #1c7ed6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(34, 139, 230, 0.3);
+}
+
+:root[data-mantine-color-scheme="light"] #pdf-viewer button:active:not(:disabled),
+:root[data-mantine-color-scheme="light"] #pdf-viewer-wrapper button:active:not(:disabled) {
+    transform: translateY(0);
+    background-color: #1864ab;
+}
+
+/* Dark mode buttons */
+:root[data-mantine-color-scheme="dark"] #pdf-viewer button,
+:root[data-mantine-color-scheme="dark"] #pdf-viewer-wrapper button {
+    background-color: #339af0;
+    color: white;
+    border-color: #339af0;
+}
+
+:root[data-mantine-color-scheme="dark"] #pdf-viewer button:hover:not(:disabled),
+:root[data-mantine-color-scheme="dark"] #pdf-viewer-wrapper button:hover:not(:disabled) {
+    background-color: #4dabf7;
+    border-color: #4dabf7;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(51, 154, 240, 0.3);
+}
+
+:root[data-mantine-color-scheme="dark"] #pdf-viewer button:active:not(:disabled),
+:root[data-mantine-color-scheme="dark"] #pdf-viewer-wrapper button:active:not(:disabled) {
+    transform: translateY(0);
+    background-color: #228be6;
+}
+
+/* Disabled button state - both themes */
+#pdf-viewer button:disabled,
+#pdf-viewer-wrapper button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+:root[data-mantine-color-scheme="light"] #pdf-viewer button:disabled,
+:root[data-mantine-color-scheme="light"] #pdf-viewer-wrapper button:disabled {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    border-color: #e9ecef;
+}
+
+:root[data-mantine-color-scheme="dark"] #pdf-viewer button:disabled,
+:root[data-mantine-color-scheme="dark"] #pdf-viewer-wrapper button:disabled {
+    background-color: #373a40;
+    color: #5c5f66;
+    border-color: #373a40;
+}
+
+/* Button focus state - accessibility */
+#pdf-viewer button:focus-visible,
+#pdf-viewer-wrapper button:focus-visible {
+    outline: 2px solid #228be6;
+    outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 750px) {
+    #pdf-viewer-wrapper {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    #pdf-viewer > div:first-child,
+    #pdf-viewer-wrapper > div:first-child > div:first-child {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        max-width: 100%;
+    }
+
+    #pdf-viewer button,
+    #pdf-viewer-wrapper button {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    #pdf-viewer p,
+    #pdf-viewer-wrapper p {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Animation for button icons (if added later) */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Loading state (if needed) */
+.pdf-loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Optional: Add hover effect to canvas */
+#pdf-viewer canvas:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Ensure proper text selection on PDF */
+#pdf-viewer,
+#pdf-viewer-wrapper {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+}
+
+/* Control buttons should not be selectable */
+#pdf-viewer button,
+#pdf-viewer-wrapper button,
+#pdf-viewer p,
+#pdf-viewer-wrapper p {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

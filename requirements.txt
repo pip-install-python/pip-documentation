@@ -21,6 +21,7 @@ dash-model-viewer
 dash-pannellum>=0.0.3
 dash-insta-stories
 dash-ace==0.2.1
+dash-pdf
 # Documentation System
 python-frontmatter==1.1.0
 markdown2dash==0.1.2
